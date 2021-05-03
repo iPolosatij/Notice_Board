@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+
+    <item android:title="@string/ads_cat1">
+        <menu>
+            <item android:title="@string/my_ads" android:id="my_ads"/>
+            <item android:title="@string/ads_car" android:id="car"/>
+            <item android:title="@string/ads_pc" android:id="pc"/>
+            <item android:title="@string/ads_smartphone" android:id="smartphone"/>
+            <item android:title="@string/ads_ds" android:id="ds"/>
+        </menu>
+    </item>
+    <item android:title="@string/ads_cat2">
+        <menu>
+            <item android:title="@string/ac_sign_up" android:id="my_ads"/>
+            <item android:title="@string/ac_log_in" android:id="car"/>
+        </menu>
+    </item>
+</menu>

@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Notice Board</string>
+
+    <!-- menu drawer strings -->
+    <string name="ads_cat1">Объявления</string>
+    <string name="my_ads">Мои Объявления</string>
+    <string name="ads_car">Автомобили</string>
+    <string name="ads_pc">Компьютеры</string>
+    <string name="ads_smartphone">Смартфоны</string>
+    <string name="ads_ds">Бытовая техника</string>
+    <string name="ads_cat2">Аккаунт</string>
+    <string name="ac_sign_up">Регистрация</string>
+    <string name="ac_log_in">Вход</string>
+    <string name="ac_log_out">Выход</string>
+</resources>
