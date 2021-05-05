@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "543814615381",
+    "project_id": "noticeboardkotlin",
+    "storage_bucket": "noticeboardkotlin.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:543814615381:android:9ba0c35b00c3452ebb6fdc",
+        "android_client_info": {
+          "package_name": "space.digitallab.noticeboard"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "543814615381-poarmq6rimrjf5n9l5787nigkiu6ocj1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB0WPCezbw_y8eoxDhWswVtmHcSMNg9YtE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "543814615381-poarmq6rimrjf5n9l5787nigkiu6ocj1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
