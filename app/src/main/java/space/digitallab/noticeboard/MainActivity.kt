@@ -1,4 +1,4 @@
-package space.digitallab.noticeboard
+ package space.digitallab.noticeboard
 
 import android.os.Bundle
 import android.view.MenuItem
@@ -7,22 +7,25 @@ import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import com.google.android.material.navigation.NavigationView
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.main_content.*
+import space.digitallab.noticeboard.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+
+ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+    private lateinit var rootElement: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        rootElement = ActivityMainBinding.inflate(layoutInflater)
+        val view = rootElement.root
+        setContentView(view)
         init()
     }
 
     private fun init() {
 
-        val toggle = ActionBarDrawerToggle(this, driverLayout, toolbar, R.string.open, R.string.close)
-        driverLayout.addDrawerListener(toggle)
+        val toggle = ActionBarDrawerToggle(this, rootElement.driverLayout, rootElement.mainContent.toolbar, R.string.open, R.string.close)
+        rootElement.driverLayout.addDrawerListener(toggle)
         toggle.syncState()
-        navView.setNavigationItemSelectedListener(this)
+        rootElement.navView.setNavigationItemSelectedListener(this)
 
     }
 
@@ -46,7 +49,7 @@ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelecte
 
         }
 
-        driverLayout.closeDrawer(GravityCompat.START)
+        rootElement.driverLayout.closeDrawer(GravityCompat.START)
         return true
     }
 }

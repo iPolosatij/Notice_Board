@@ -3,7 +3,6 @@ plugins {
     id 'kotlin-android'
     id 'com.google.gms.google-services'
 }
-apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 30
@@ -31,6 +30,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
     }
 }
 
