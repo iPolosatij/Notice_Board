@@ -16,7 +16,8 @@
     <item android:title="@string/ads_cat2">
         <menu>
             <item android:title="@string/ac_sign_up" android:id="@+id/registration"/>
-            <item android:title="@string/ac_log_in" android:id="@+id/logout"/>
+            <item android:title="@string/ac_log_in" android:id="@+id/login"/>
+            <item android:title="@string/ac_log_out" android:id="@+id/logout"/>
         </menu>
     </item>
 </menu>
