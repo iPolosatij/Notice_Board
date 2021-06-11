@@ -14,6 +14,7 @@
     <string name="ac_log_out">Выход</string>
     <string name="open">open</string>
     <string name="close">close</string>
+    <string name="not_reg">Войдите или зарегистрируйтесь!</string>
 
     <!-- Sign Dialog -->
     <string name="email_hint">Email</string>
@@ -22,6 +23,7 @@
     <string name="sign_in_action">Войти</string>
     <string name="forget_password">Забыли пароль?</string>
     <string name="sign_up_error">Неудалось зарегистрироваться</string>
+    <string name="sign_in_error">Неудалось войти</string>
     <string name="sent_verification_done">На вашу почту было отправлено пистмо для подтверждения перейдите по ссылке из письма</string>
     <string name="sent_verification_email_error">Неудалось отправить письмо подтверждения</string>
 </resources>
