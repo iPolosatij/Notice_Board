@@ -17,11 +17,14 @@
     <string name="not_reg">Войдите или зарегистрируйтесь!</string>
 
     <!-- Sign Dialog -->
+    <string name="email_reset_password_was_sent">На вашу почту было отправлено пистмо для восстановления пароля</string>
+    <string name="dialog_reset_email_message">Укажите Email для восстановления пароля</string>
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="sign_up_action">Зарегистрироваться</string>
     <string name="sign_in_action">Войти</string>
     <string name="forget_password">Забыли пароль?</string>
+    <string name="reset_password">Восстановить</string>
     <string name="sign_up_error">Неудалось зарегистрироваться</string>
     <string name="sign_in_error">Неудалось войти</string>
     <string name="sent_verification_done">На вашу почту было отправлено пистмо для подтверждения перейдите по ссылке из письма</string>
