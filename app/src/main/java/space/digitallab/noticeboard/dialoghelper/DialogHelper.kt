@@ -11,6 +11,7 @@ import space.digitallab.noticeboard.databinding.SignDialogBinding
 class DialogHelper(act:MainActivity) {
     private val act = act
     private val accHelper = AccountHelper(act)
+    private var isResetPasswordPressed = false
 
     fun createSignDialog(index:Int){
         val builder = AlertDialog.Builder(act)
@@ -32,25 +33,26 @@ class DialogHelper(act:MainActivity) {
     }
 
     private fun setOnClickResetPassword(rootDialogElement: SignDialogBinding, dialog: AlertDialog?) {
-        rootDialogElement.idSignPassword.visibility = View.INVISIBLE
-        rootDialogElement.btSignUpIn.setText(R.string.reset_password)
-        rootDialogElement.btForgetPassword.visibility = View.INVISIBLE
-        rootDialogElement.tvDialogMessage.setText(R.string.dialog_reset_email_message)
-        rootDialogElement.btSignUpIn.setOnClickListener {
-            resetPassword(rootDialogElement, dialog)
-        }
-    }
-
-    private fun resetPassword(rootDialogElement: SignDialogBinding, dialog: AlertDialog?) {
-        if(rootDialogElement.idSigmEmail.text.isNotEmpty()){
-            act.mAuth.sendPasswordResetEmail(rootDialogElement.idSigmEmail.toString()).addOnCompleteListener { task ->
-                if(task.isSuccessful){
-                    Toast.makeText(act, R.string.email_reset_password_was_sent, Toast.LENGTH_LONG).show()
+        if(isResetPasswordPressed) {
+            var email = rootDialogElement.edSignEmail.text.toString()
+            if (email.isNotEmpty()) {
+                act.mAuth.sendPasswordResetEmail(email).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(act, act.resources.getString(R.string.email_reset_password_was_sent), Toast.LENGTH_LONG).show()
+                        dialog?.dismiss()
+                    } else {
+                        rootDialogElement.tvDialogMessage.setText(R.string.invalid_email)
+                    }
                 }
-                dialog?.dismiss()
+            } else {
+                rootDialogElement.tvDialogMessage.setText(R.string.dialog_reset_email_message)
+                rootDialogElement.tvDialogMessage.visibility = View.VISIBLE
             }
         }else{
-            rootDialogElement.tvDialogMessage.visibility = View.VISIBLE
+            rootDialogElement.btSignUpIn.visibility = View.INVISIBLE
+            rootDialogElement.edSignPassword.visibility = View.INVISIBLE
+            rootDialogElement.btForgetPassword.setText(R.string.reset_password)
+            isResetPasswordPressed = true
         }
     }
 
@@ -58,11 +60,11 @@ class DialogHelper(act:MainActivity) {
 
         dialog?.dismiss()
         if(index == DialogConst.SIGN_UP_STATE){
-            accHelper.signUpWithEmail(rootDialogElement.idSigmEmail.text.toString(),
-                    rootDialogElement.idSignPassword.text.toString())
+            accHelper.signUpWithEmail(rootDialogElement.edSignEmail.text.toString(),
+                    rootDialogElement.edSignPassword.text.toString())
         }else{
-            accHelper.signInWithEmail(rootDialogElement.idSigmEmail.text.toString(),
-                    rootDialogElement.idSignPassword.text.toString())
+            accHelper.signInWithEmail(rootDialogElement.edSignEmail.text.toString(),
+                    rootDialogElement.edSignPassword.text.toString())
         }
     }
 

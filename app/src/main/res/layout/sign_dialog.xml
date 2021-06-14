@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/idSigmEmail"
+        android:id="@+id/edSignEmail"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -32,7 +32,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tvDialogMessage" />
 
     <EditText
-        android:id="@+id/idSignPassword"
+        android:id="@+id/edSignPassword"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -40,9 +40,9 @@
         android:hint="@string/password_hint"
         android:inputType="textPassword"
         android:textColorHint="@android:color/darker_gray"
-        app:layout_constraintEnd_toEndOf="@+id/idSigmEmail"
-        app:layout_constraintStart_toStartOf="@+id/idSigmEmail"
-        app:layout_constraintTop_toBottomOf="@+id/idSigmEmail" />
+        app:layout_constraintEnd_toEndOf="@+id/edSignEmail"
+        app:layout_constraintStart_toStartOf="@+id/edSignEmail"
+        app:layout_constraintTop_toBottomOf="@+id/edSignEmail" />
 
     <Button
         android:id="@+id/btSignUpIn"
@@ -52,10 +52,10 @@
         android:layout_marginBottom="16dp"
         android:text="@string/sign_up_action"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/idSigmEmail"
+        app:layout_constraintEnd_toEndOf="@+id/edSignEmail"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/idSigmEmail"
-        app:layout_constraintTop_toBottomOf="@+id/idSignPassword" />
+        app:layout_constraintStart_toStartOf="@+id/edSignEmail"
+        app:layout_constraintTop_toBottomOf="@+id/edSignPassword" />
 
     <Button
         android:id="@+id/btForgetPassword"
@@ -64,8 +64,8 @@
         android:layout_marginTop="8dp"
         android:text="@string/forget_password"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/idSigmEmail"
-        app:layout_constraintStart_toStartOf="@+id/idSigmEmail"
+        app:layout_constraintEnd_toEndOf="@+id/edSignEmail"
+        app:layout_constraintStart_toStartOf="@+id/edSignEmail"
         app:layout_constraintTop_toBottomOf="@+id/btSignUpIn" />
 
     <TextView
@@ -79,7 +79,7 @@
         android:textColor="@color/color_red"
         android:textColorLink="#FFFFFF"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/idSigmEmail"
-        app:layout_constraintStart_toStartOf="@+id/idSigmEmail"
+        app:layout_constraintEnd_toEndOf="@+id/edSignEmail"
+        app:layout_constraintStart_toStartOf="@+id/edSignEmail"
         app:layout_constraintTop_toBottomOf="@+id/tvSignTitle" />
 </androidx.constraintlayout.widget.ConstraintLayout>
