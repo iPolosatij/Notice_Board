@@ -10,7 +10,7 @@ import space.digitallab.noticeboard.databinding.SignDialogBinding
 
 class DialogHelper(act:MainActivity) {
     private val act = act
-    private val accHelper = AccountHelper(act)
+    val accHelper = AccountHelper(act)
     private var isResetPasswordPressed = false
 
     fun createSignDialog(index:Int){
@@ -26,6 +26,11 @@ class DialogHelper(act:MainActivity) {
         rootDialogElement.btSignUpIn.setOnClickListener{
             setOnClickSignUpIn(index, rootDialogElement, dialog)
         }
+
+        rootDialogElement.btGoogleSignIn.setOnClickListener{
+            accHelper.signInWithGoogle()
+        }
+
         rootDialogElement.btForgetPassword.setOnClickListener{
             setOnClickResetPassword(rootDialogElement, dialog)
         }
@@ -51,6 +56,8 @@ class DialogHelper(act:MainActivity) {
         }else{
             rootDialogElement.btSignUpIn.visibility = View.INVISIBLE
             rootDialogElement.edSignPassword.visibility = View.INVISIBLE
+            rootDialogElement.btGoogleSignIn.visibility = View.INVISIBLE
+            rootDialogElement.resetPassText.visibility = View.VISIBLE
             rootDialogElement.btForgetPassword.setText(R.string.reset_password)
             isResetPasswordPressed = true
         }

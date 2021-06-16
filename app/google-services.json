@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "543814615381-anq79m2oin5iprhlkk54j82rkqrbvp1n.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "space.digitallab.noticeboard",
+            "certificate_hash": "ec919ac941fe32856a10f8fc6fe5ae1805e1e5a9"
+          }
+        },
+        {
           "client_id": "543814615381-poarmq6rimrjf5n9l5787nigkiu6ocj1.apps.googleusercontent.com",
           "client_type": 3
         }

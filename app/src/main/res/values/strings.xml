@@ -18,6 +18,7 @@
 
     <!-- Sign Dialog -->
     <string name="email_reset_password_was_sent">На вашу почту было отправлено пистмо для восстановления пароля</string>
+    <string name="reset_pass_text">Для восстановления пароля укажите адрес почты указанной при регистрации</string>
     <string name="dialog_reset_email_message">Укажите Email для восстановления пароля</string>
     <string name="invalid_email">Email указан неверно</string>
     <string name="email_hint">Email</string>
