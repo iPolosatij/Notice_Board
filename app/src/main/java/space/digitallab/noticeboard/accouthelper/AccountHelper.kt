@@ -78,6 +78,10 @@ class AccountHelper(act: MainActivity) {
         act.startActivityForResult(intent, GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE)
     }
 
+    fun signOutGoogle(){
+        getSignInClient().signOut()
+    }
+
     fun signInFirebaseWithGoogle(token: String){
         val credential = GoogleAuthProvider.getCredential(token, null)
         act.mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
@@ -106,13 +110,21 @@ class AccountHelper(act: MainActivity) {
                 if(task.isSuccessful){
                     act.uiUpdate(task.result?.user)
                 }else{
-                    //Log.d("MyLog", "Exception - ${tack.exception}")
+                    //Log.d("MyLog", "Exception - ${task.exception}")
                     Toast.makeText(act, act.resources.getString(R.string.sign_in_error), Toast.LENGTH_LONG).show()
 
                     if (task.exception is FirebaseAuthInvalidCredentialsException) {
                         val exception = task.exception as FirebaseAuthInvalidCredentialsException
                         if (exception.errorCode == FirebaseAuthConstants.ERROR_WRONG_PASSWORD) {
                             Toast.makeText(act, FirebaseAuthConstants.ERROR_WRONG_PASSWORD, Toast.LENGTH_LONG).show()
+                        }
+                    }else if(task.exception is FirebaseAuthInvalidUserException) {
+                        val exception = task.exception as FirebaseAuthInvalidUserException
+                        if (exception.errorCode == FirebaseAuthConstants.ERROR_USER_NOT_FOUND) {
+                            Toast.makeText(act, FirebaseAuthConstants.ERROR_USER_NOT_FOUND, Toast.LENGTH_LONG).show()
+                        }
+                        if (exception.errorCode == FirebaseAuthConstants.ERROR_USER_DISABLED) {
+                            Toast.makeText(act, FirebaseAuthConstants.ERROR_USER_DISABLED, Toast.LENGTH_LONG).show()
                         }
                     }
                 }

@@ -3,6 +3,7 @@
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -14,6 +15,7 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import space.digitallab.noticeboard.act.EditAdsAct
 import space.digitallab.noticeboard.databinding.ActivityMainBinding
 import space.digitallab.noticeboard.dialoghelper.DialogConst
 import space.digitallab.noticeboard.dialoghelper.DialogHelper
@@ -33,7 +35,20 @@ import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
         val view = rootElement.root
         setContentView(view)
         init()
-    }
+     }
+
+     override fun onOptionsItemSelected(item: MenuItem): Boolean {
+         if(item.itemId == R.id.id_new_ads){
+             val i = Intent(this, EditAdsAct::class.java)
+             startActivity(i)
+         }
+         return super.onOptionsItemSelected(item)
+     }
+
+     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+         menuInflater.inflate(R.menu.main_menu, menu)
+         return super.onCreateOptionsMenu(menu)
+     }
 
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
@@ -59,12 +74,18 @@ import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
      }
 
      private fun init() {
-
-        val toggle = ActionBarDrawerToggle(this, rootElement.driverLayout, rootElement.mainContent.toolbar, R.string.open, R.string.close)
-        rootElement.driverLayout.addDrawerListener(toggle)
-        toggle.syncState()
-        rootElement.navView.setNavigationItemSelectedListener(this)
-        tvAccount = rootElement.navView.getHeaderView(0).findViewById(R.id.tv_acaunt_email)
+         setSupportActionBar(rootElement.mainContent.toolbar)
+         val toggle = ActionBarDrawerToggle(
+             this,
+             rootElement.driverLayout,
+             rootElement.mainContent.toolbar,
+             R.string.open,
+             R.string.close
+         )
+         rootElement.driverLayout.addDrawerListener(toggle)
+         toggle.syncState()
+         rootElement.navView.setNavigationItemSelectedListener(this)
+         tvAccount = rootElement.navView.getHeaderView(0).findViewById(R.id.tv_acaunt_email)
 
     }
 
@@ -93,6 +114,7 @@ import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
             R.id.logout -> {
                 uiUpdate(null)
                 mAuth.signOut()
+                dialogHelper.accHelper.signOutGoogle()
             }
 
         }
