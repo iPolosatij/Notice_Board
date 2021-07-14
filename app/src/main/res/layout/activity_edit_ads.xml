@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@android:drawable/editbox_background_normal"
     tools:context=".act.EditAdsAct">
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:foregroundGravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -17,7 +19,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <androidx.viewpager2.widget.ViewPager2
                 android:id="@+id/vpImages"
@@ -29,24 +31,17 @@
 
             </androidx.viewpager2.widget.ViewPager2>
 
-            <SearchView
-                android:id="@+id/countrySearch"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp">
-
-            </SearchView>
-
-            <Spinner
-                android:id="@+id/spCountry"
+            <TextView
+                android:id="@+id/tvCountry"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="5dp"
-                android:layout_weight="1" />
+                android:layout_margin="5dp"
+                android:background="@android:drawable/editbox_background"
+                android:gravity="center"
+                android:onClick="onClickSelectCountry"
+                android:padding="10dp"
+                android:text="@string/select_country" />
+
         </LinearLayout>
     </ScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

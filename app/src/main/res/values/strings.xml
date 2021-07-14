@@ -35,4 +35,9 @@
     <!-- SignUp Dialog -->
     <string name="link_done">Email подключен к Google аккаунту</string>
     <string name="link_exception">Для этого Email уже создана учетная запись через гугл аккаунт, войдите через гугл аккаунт</string>
+
+    <!-- EditActivity -->
+    <string name="no_result"> нет результата</string>
+    <string name="select_country">*Выберите страну</string>
+    <string name="select_city">*Выберите город</string>
 </resources>

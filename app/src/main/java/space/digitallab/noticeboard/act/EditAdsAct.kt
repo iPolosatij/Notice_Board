@@ -1,22 +1,30 @@
 package space.digitallab.noticeboard.act
 
 import android.os.Bundle
-import android.widget.ArrayAdapter
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import space.digitallab.noticeboard.databinding.ActivityEditAdsBinding
+import space.digitallab.noticeboard.dialogs.DialogSpinnerHelper
 import space.digitallab.noticeboard.utils.CitySearchHelper
 
 class EditAdsAct : AppCompatActivity() {
-    private lateinit var rootElement: ActivityEditAdsBinding
+    lateinit var rootElement: ActivityEditAdsBinding
+    private val dialog = DialogSpinnerHelper()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         rootElement = ActivityEditAdsBinding.inflate(layoutInflater)
         setContentView(rootElement.root)
+        init()
+    }
 
-        val adapter = ArrayAdapter(this,
-            android.R.layout.simple_spinner_item,
-            CitySearchHelper.getAllCountries(this))
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        rootElement.spCountry.adapter = adapter
+    private fun init(){
+        dialog.init(this)
+    }
+
+    //OnClicks
+    fun onClickSelectCountry(view: View){
+        val listCountry = CitySearchHelper.getAllCountries(this)
+        dialog.showSpinnerDialog(listCountry)
     }
 }
