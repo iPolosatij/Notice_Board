@@ -1,48 +1,24 @@
 package space.digitallab.noticeboard.utils
 
-import android.content.Intent
-import androidx.activity.result.ActivityResultLauncher
-import io.ak1.pix.helpers.PixEventCallback
-import io.ak1.pix.helpers.addPixToActivity
-import io.ak1.pix.models.Mode
-import io.ak1.pix.models.Options
-import space.digitallab.noticeboard.R
-import space.digitallab.noticeboard.act.EditAdsAct
+import androidx.appcompat.app.AppCompatActivity
+import com.fxn.pix.Options
+import com.fxn.pix.Pix
+
+
 
 object ImagePiker {
+    const val REQUEST_CODE_GET_IMAGES = 999
 
-   private fun getOptions(imageCounter : Int) : Options{
+    fun getImages(act:AppCompatActivity){
+        val options = Options.init()
+                .setRequestCode(REQUEST_CODE_GET_IMAGES)                       //Request code for activity results
+                .setCount(3)                                                   //Number of images to restict selection count
+                .setFrontfacing(false)                                         //Front Facing camera on start
+                .setMode(Options.Mode.Picture)                                 //Option to select only pictures or videos or both
+                .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
+                .setPath("/pix/images")                                        //Custom Path For media Storage
 
-       val options = Options().apply{
-
-           count = imageCounter                                        //Number of images to restrict selection count
-           path = "/pix/images"                                        //Custom Path For media Storage
-           isFrontFacing = false                                       //Front Facing camera on start
-           mode = Mode.Picture                                         //Option to select only pictures or videos or both
-           //flash = Flash.Auto                                        //Option to select flash type
-           //preSelectedUrls = ArrayList<Uri>()                        //Pre selected Image Urls
-           //ratio = Ratio.RATIO_AUTO                                  //Image/video capture ratio
-           //spanCount = 4                                             //Number for columns in grid
-           //videoDurationLimitInSeconds = 10                          //Duration for video recording
-       }
-       return options
+        Pix.start(act, options)
     }
 
-    fun launcher(edAct: EditAdsAct, Launcher: ActivityResultLauncher<Intent>?, imageCounter: Int) {
-       edAct.addPixToActivity(R.id.place_holder, getOptions(imageCounter)) { result->
-            when (result.status) {
-                PixEventCallback.Status.SUCCESS -> {
-                    val fList = edAct.supportFragmentManager.fragments
-                    fList.forEach {
-                        if (it.isVisible) edAct.supportFragmentManager.beginTransaction().remove(it).commit()
-                    }
-                }//use results as it.data
-                   // PixEventCallback.Status.BACK_PRESSED -> // back pressed called
-            }
-        }
-    }
-
-    fun getImages() {
-
-    }
 }

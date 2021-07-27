@@ -1,4 +1,4 @@
-package space.digitallab.noticeboard.accouthelper
+package space.digitallab.noticeboard.accounthelper
 
 import android.util.Log
 import android.widget.Toast

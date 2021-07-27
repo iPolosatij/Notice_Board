@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.Toast
 import space.digitallab.noticeboard.MainActivity
 import space.digitallab.noticeboard.R
-import space.digitallab.noticeboard.accouthelper.AccountHelper
+import space.digitallab.noticeboard.accounthelper.AccountHelper
 import space.digitallab.noticeboard.databinding.SignDialogBinding
 
 class DialogHelper(act:MainActivity) {
