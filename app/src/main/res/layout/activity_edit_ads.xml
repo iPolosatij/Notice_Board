@@ -10,7 +10,7 @@
     tools:context=".act.EditAdsAct">
 
     <ScrollView
-        android:id="@+id/scrolViewMine"
+        android:id="@+id/scrollViewMine"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:foregroundGravity="center"

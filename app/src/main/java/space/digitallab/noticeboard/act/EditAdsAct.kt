@@ -1,5 +1,6 @@
 package space.digitallab.noticeboard.act
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
@@ -41,6 +42,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         }
     }
 
+    @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -51,7 +53,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] === PackageManager.PERMISSION_GRANTED) {
-                    ImagePiker.getImages(this)
+                    ImagePiker.getImages(this, 3)
                 } else {
                     Toast.makeText(
                         this,
@@ -88,8 +90,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: View){
-        ImagePiker.getImages(this)
-        rootElement.scrolViewMine.visibility = View.GONE
+        ImagePiker.getImages(this, 3)
+        rootElement.scrollViewMine.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction().replace(
             R.id.place_holder, ImageListFragment(
                 this
@@ -98,6 +100,6 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     override fun onFragmentClose() {
-        rootElement.scrolViewMine.visibility = View.VISIBLE
+        rootElement.scrollViewMine.visibility = View.VISIBLE
     }
 }
