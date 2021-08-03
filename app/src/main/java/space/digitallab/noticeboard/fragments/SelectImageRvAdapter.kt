@@ -8,10 +8,11 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import space.digitallab.noticeboard.R
+import space.digitallab.noticeboard.utils.ItemTouchMoveCallback
 
-class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHolder>() {
+class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHolder>(), ItemTouchMoveCallback.ItemTouchAdapter {
 
-    private val mainArray = ArrayList<SelectImageItem>()
+     val mainArray = ArrayList<SelectImageItem>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.select_image_fragment_item, parent, false)
         return ImageHolder(view)
@@ -23,6 +24,13 @@ class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHold
 
     override fun getItemCount(): Int {
         return mainArray.size
+    }
+
+    override fun onMove(startPos: Int, targetPos: Int) {
+        val targetItem = mainArray[targetPos]
+        mainArray[targetPos] = mainArray[startPos]
+        mainArray[startPos] = targetItem
+        notifyItemMoved(startPos, targetPos)
     }
 
     class ImageHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
@@ -43,5 +51,7 @@ class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHold
         mainArray.addAll(newList)
         notifyDataSetChanged()
     }
+
+
 
 }
