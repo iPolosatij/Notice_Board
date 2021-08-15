@@ -1,7 +1,7 @@
 package space.digitallab.noticeboard.fragments
 
 interface FragmentCloseInterface {
-    fun onFragmentClose(){
+    fun onFragmentClose(list : ArrayList<SelectImageItem>){
 
     }
 }

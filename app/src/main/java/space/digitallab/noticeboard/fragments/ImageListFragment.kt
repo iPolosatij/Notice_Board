@@ -41,7 +41,7 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
 
     override fun onDetach() {
         super.onDetach()
-        fragmentCloseInterface.onFragmentClose()
+        fragmentCloseInterface.onFragmentClose(adapter.mainArray)
         Toast.makeText(activity, "ссылки \n" +
                 "Title1 : ${adapter.mainArray[0].title} \n" +
                 " Title2 : ${adapter.mainArray[1].title}\n" +

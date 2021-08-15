@@ -10,10 +10,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import space.digitallab.noticeboard.R
+import space.digitallab.noticeboard.adapters.ImageAdapter
 import space.digitallab.noticeboard.databinding.ActivityEditAdsBinding
 import space.digitallab.noticeboard.dialogs.DialogSpinnerHelper
 import space.digitallab.noticeboard.fragments.FragmentCloseInterface
 import space.digitallab.noticeboard.fragments.ImageListFragment
+import space.digitallab.noticeboard.fragments.SelectImageItem
 import space.digitallab.noticeboard.utils.CitySearchHelper
 import space.digitallab.noticeboard.utils.ImagePiker
 
@@ -21,6 +23,7 @@ import space.digitallab.noticeboard.utils.ImagePiker
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
+    private lateinit var imageAdapter : ImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +74,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     private fun init(){
         dialog.init(this)
+        imageAdapter = ImageAdapter()
+        rootElement.vpImages.adapter = imageAdapter
     }
 
     //OnClicks
@@ -97,7 +102,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     }
 
-    override fun onFragmentClose() {
+    override fun onFragmentClose(list : ArrayList<SelectImageItem>) {
         rootElement.scrollViewMine.visibility = View.VISIBLE
+        imageAdapter.update(list)
     }
 }

@@ -28,9 +28,13 @@ class SelectImageRvAdapter : RecyclerView.Adapter<SelectImageRvAdapter.ImageHold
 
     override fun onMove(startPos: Int, targetPos: Int) {
         val targetItem = mainArray[targetPos]
-        mainArray[targetPos] = mainArray[startPos]
-        mainArray[startPos] = targetItem
+        mainArray[targetPos].imageUri = mainArray[startPos].imageUri
+        mainArray[startPos].imageUri = targetItem.imageUri
         notifyItemMoved(startPos, targetPos)
+    }
+
+    override fun onClear() {
+        notifyDataSetChanged()
     }
 
     class ImageHolder(itemView : View) : RecyclerView.ViewHolder(itemView) {
