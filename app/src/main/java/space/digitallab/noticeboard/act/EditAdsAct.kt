@@ -21,6 +21,7 @@ import space.digitallab.noticeboard.utils.ImagePiker
 
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
+    private var chooseImageFragment : ImageListFragment? = null
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
     private lateinit var imageAdapter : ImageAdapter
@@ -35,14 +36,23 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == RESULT_OK && requestCode == ImagePiker.REQUEST_CODE_GET_IMAGES) {
+
             if(data != null) {
+
                 val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
 
-                if(returnValues != null && returnValues.size > 1) {
+                if(returnValues?.size!! > 1 && chooseImageFragment == null) {
+
+                    chooseImageFragment = ImageListFragment(this, returnValues)
                     rootElement.scrollViewMine.visibility = View.GONE
                     val fm = supportFragmentManager.beginTransaction()
-                    fm.replace(R.id.place_holder, ImageListFragment(this, returnValues))
+                    fm.replace(R.id.place_holder, chooseImageFragment!!)
                     fm.commit()
+
+                } else if (chooseImageFragment != null){
+
+                    chooseImageFragment?.updateAdapter(returnValues)
+
                 }
             }
         }
@@ -105,5 +115,6 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     override fun onFragmentClose(list : ArrayList<SelectImageItem>) {
         rootElement.scrollViewMine.visibility = View.VISIBLE
         imageAdapter.update(list)
+        chooseImageFragment = null
     }
 }
