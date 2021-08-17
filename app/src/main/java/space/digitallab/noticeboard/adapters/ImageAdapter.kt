@@ -7,11 +7,10 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import space.digitallab.noticeboard.R
-import space.digitallab.noticeboard.fragments.SelectImageItem
 
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
 
-    val mainArray = ArrayList<SelectImageItem>()
+    val mainArray = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
        val view = LayoutInflater.from(parent.context).inflate(R.layout.image_adapter_item, parent,false)
@@ -19,7 +18,7 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
     }
 
     override fun onBindViewHolder(holder: ImageHolder, position: Int) {
-        holder.setData((mainArray[position].imageUri))
+        holder.setData((mainArray[position]))
     }
 
     override fun getItemCount(): Int {
@@ -36,7 +35,7 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
         }
     }
 
-    fun update(newList : ArrayList<SelectImageItem>){
+    fun update(newList : ArrayList<String>){
         mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()

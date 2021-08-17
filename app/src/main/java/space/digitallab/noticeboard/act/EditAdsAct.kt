@@ -15,7 +15,6 @@ import space.digitallab.noticeboard.databinding.ActivityEditAdsBinding
 import space.digitallab.noticeboard.dialogs.DialogSpinnerHelper
 import space.digitallab.noticeboard.fragments.FragmentCloseInterface
 import space.digitallab.noticeboard.fragments.ImageListFragment
-import space.digitallab.noticeboard.fragments.SelectImageItem
 import space.digitallab.noticeboard.utils.CitySearchHelper
 import space.digitallab.noticeboard.utils.ImagePiker
 
@@ -43,11 +42,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
                 if(returnValues?.size!! > 1 && chooseImageFragment == null) {
 
-                    chooseImageFragment = ImageListFragment(this, returnValues)
-                    rootElement.scrollViewMine.visibility = View.GONE
-                    val fm = supportFragmentManager.beginTransaction()
-                    fm.replace(R.id.place_holder, chooseImageFragment!!)
-                    fm.commit()
+                    openChooseImageFragment(returnValues)
 
                 } else if (chooseImageFragment != null){
 
@@ -108,13 +103,27 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickGetImages(view: View){
-        ImagePiker.getImages(this, 3)
+        if(imageAdapter.mainArray.size == 0){
+            ImagePiker.getImages(this, 3)
+        }else{
+            openChooseImageFragment(imageAdapter.mainArray)
+        }
+
 
     }
 
-    override fun onFragmentClose(list : ArrayList<SelectImageItem>) {
+    override fun onFragmentClose(list : ArrayList<String>) {
         rootElement.scrollViewMine.visibility = View.VISIBLE
         imageAdapter.update(list)
         chooseImageFragment = null
+    }
+
+    private fun openChooseImageFragment(newList : ArrayList<String>){
+
+        chooseImageFragment = ImageListFragment(this, newList)
+        rootElement.scrollViewMine.visibility = View.GONE
+        val fm = supportFragmentManager.beginTransaction()
+        fm.replace(R.id.place_holder, chooseImageFragment!!)
+        fm.commit()
     }
 }
