@@ -13,6 +13,7 @@ import space.digitallab.noticeboard.adapters.SelectImageRvAdapter
 import space.digitallab.noticeboard.databinding.ListImageFragmentBinding
 import space.digitallab.noticeboard.utils.ImagePiker
 import space.digitallab.noticeboard.utils.ItemTouchMoveCallback
+import space.digitallab.noticeboard.utils.SetImageManager
 
 class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterface, private val newList : ArrayList<String>) : Fragment() {
 
@@ -31,8 +32,9 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
         setUpToolbar()
         rootElement.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
         rootElement.rcViewSelectImage.adapter = adapter
+        SetImageManager.imageResize(newList)
         touchHealper.attachToRecyclerView(rootElement.rcViewSelectImage)
-        adapter.updateAdapter(newList, true)
+        //adapter.updateAdapter(newList, true)
     }
 
     override fun onDetach() {
