@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import space.digitallab.noticeboard.R
+import space.digitallab.noticeboard.adapters.SelectImageRvAdapter
 import space.digitallab.noticeboard.databinding.ListImageFragmentBinding
 import space.digitallab.noticeboard.utils.ImagePiker
 import space.digitallab.noticeboard.utils.ItemTouchMoveCallback
@@ -55,7 +56,7 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
         addItem.setOnMenuItemClickListener {
             if(adapter.mainArray.size < ImagePiker.MAX_IMAGE_COUNT) {
                 val imageCount = ImagePiker.MAX_IMAGE_COUNT - adapter.mainArray.size
-                ImagePiker.getImages(activity as AppCompatActivity, imageCount)
+                ImagePiker.getImages(activity as AppCompatActivity, imageCount, ImagePiker.REQUEST_CODE_GET_IMAGES)
             }
             true
         }
@@ -64,6 +65,12 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
     fun updateAdapter(newList : ArrayList<String>){
 
         adapter.updateAdapter(newList, false)
+    }
+
+    fun setSingleImage(uri : String, position : Int){
+
+        adapter.mainArray[position] = uri
+        adapter.notifyDataSetChanged()
     }
 
 }

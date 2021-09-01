@@ -24,6 +24,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
     private lateinit var imageAdapter : ImageAdapter
+    var editImagePosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,6 +51,10 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
                 }
             }
+        } else if(resultCode == RESULT_OK && requestCode == ImagePiker.REQUEST_CODE_GET_SINGLE_IMAGE){
+
+            val uris = data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+            chooseImageFragment?.setSingleImage(uris?.get(0)!!, editImagePosition)
         }
     }
 
@@ -64,7 +69,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] === PackageManager.PERMISSION_GRANTED) {
-                    ImagePiker.getImages(this, 3)
+                    ImagePiker.getImages(this, 3, ImagePiker.REQUEST_CODE_GET_IMAGES)
                 } else {
                     Toast.makeText(
                         this,
@@ -104,7 +109,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     fun onClickGetImages(view: View){
         if(imageAdapter.mainArray.size == 0){
-            ImagePiker.getImages(this, 3)
+            ImagePiker.getImages(this, 3, ImagePiker.REQUEST_CODE_GET_IMAGES)
         }else{
             openChooseImageFragment(imageAdapter.mainArray)
         }
