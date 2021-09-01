@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,7 @@ import space.digitallab.noticeboard.fragments.FragmentCloseInterface
 import space.digitallab.noticeboard.fragments.ImageListFragment
 import space.digitallab.noticeboard.utils.CitySearchHelper
 import space.digitallab.noticeboard.utils.ImagePiker
+import space.digitallab.noticeboard.utils.SetImageManager
 
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
@@ -44,7 +46,10 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
                 if(returnValues?.size!! > 1 && chooseImageFragment == null) {
                     openChooseImageFragment(returnValues)
                 } else if(returnValues.size == 1 && chooseImageFragment == null){
-                    imageAdapter.update(returnValues)
+                    val tempList = SetImageManager.getImageSize(returnValues[0])
+                    //imageAdapter.update(returnValues)
+                    Log.d("MyLog", "Image width :  ${tempList[0]}")
+                    Log.d("MyLog", "Image height :  ${tempList[1]}")
                 } else if (chooseImageFragment != null){
                     chooseImageFragment?.updateAdapter(returnValues)
                 }
