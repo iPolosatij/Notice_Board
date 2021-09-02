@@ -3,6 +3,7 @@ package space.digitallab.noticeboard.act
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -114,19 +115,20 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         if(imageAdapter.mainArray.size == 0){
             ImagePiker.getImages(this, 3, ImagePiker.REQUEST_CODE_GET_IMAGES)
         }else{
-            openChooseImageFragment(imageAdapter.mainArray)
+            openChooseImageFragment(null)
+            chooseImageFragment?.updateAdapterFromEdit(imageAdapter.mainArray)
         }
 
 
     }
 
-    override fun onFragmentClose(list : ArrayList<String>) {
+    override fun onFragmentClose(list : ArrayList<Bitmap>) {
         rootElement.scrollViewMine.visibility = View.VISIBLE
         imageAdapter.update(list)
         chooseImageFragment = null
     }
 
-    private fun openChooseImageFragment(newList : ArrayList<String>){
+    private fun openChooseImageFragment(newList : ArrayList<String>?){
 
         chooseImageFragment = ImageListFragment(this, newList)
         rootElement.scrollViewMine.visibility = View.GONE

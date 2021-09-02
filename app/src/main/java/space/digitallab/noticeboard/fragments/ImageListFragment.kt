@@ -1,7 +1,7 @@
 package space.digitallab.noticeboard.fragments
 
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,13 +20,13 @@ import space.digitallab.noticeboard.utils.ImagePiker
 import space.digitallab.noticeboard.utils.ItemTouchMoveCallback
 import space.digitallab.noticeboard.utils.SetImageManager
 
-class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterface, private val newList : ArrayList<String>) : Fragment() {
+class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterface, private val newList : ArrayList<String>?) : Fragment() {
 
     lateinit var rootElement : ListImageFragmentBinding
     val adapter = SelectImageRvAdapter()
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHealper = ItemTouchHelper(dragCallback)
-    private lateinit var job: Job
+    private var job: Job? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootElement = ListImageFragmentBinding.inflate(inflater)
         return rootElement.root
@@ -36,20 +36,25 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
         super.onViewCreated(view, savedInstanceState)
 
         setUpToolbar()
+        touchHealper.attachToRecyclerView(rootElement.rcViewSelectImage)
         rootElement.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
         rootElement.rcViewSelectImage.adapter = adapter
-        job = CoroutineScope(Dispatchers.Main).launch {
-            val text = SetImageManager.imageResize(newList)
-            Log.d("MyLog", "Result : $text")
+        if(newList != null) {
+            job = CoroutineScope(Dispatchers.Main).launch {
+                val bitmapList = SetImageManager.imageResize(newList)
+                adapter.updateAdapter(bitmapList, true)
+            }
         }
-        touchHealper.attachToRecyclerView(rootElement.rcViewSelectImage)
-        //adapter.updateAdapter(newList, true)
+    }
+
+    fun updateAdapterFromEdit(bitmapList : List<Bitmap>){
+        adapter.updateAdapter(bitmapList, true)
     }
 
     override fun onDetach() {
         super.onDetach()
         fragmentCloseInterface.onFragmentClose(adapter.mainArray)
-        job.cancel()
+        job?.cancel()
     }
 
     private fun setUpToolbar(){
@@ -75,14 +80,19 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
     }
 
     fun updateAdapter(newList : ArrayList<String>){
-
-        adapter.updateAdapter(newList, false)
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val bitmapList = SetImageManager.imageResize(newList)
+            adapter.updateAdapter(bitmapList, false)
+        }
     }
 
     fun setSingleImage(uri : String, position : Int){
 
-        adapter.mainArray[position] = uri
-        adapter.notifyDataSetChanged()
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val bitmapList = SetImageManager.imageResize(listOf(uri))
+            adapter.mainArray[position] = bitmapList[0]
+            adapter.notifyDataSetChanged()
+        }
     }
 
 }

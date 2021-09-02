@@ -1,6 +1,6 @@
 package space.digitallab.noticeboard.adapters
 
-import android.net.Uri
+import android.graphics.Bitmap
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +10,7 @@ import space.digitallab.noticeboard.R
 
 class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
 
-    val mainArray = ArrayList<String>()
+    val mainArray = ArrayList<Bitmap>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ImageHolder {
        val view = LayoutInflater.from(parent.context).inflate(R.layout.image_adapter_item, parent,false)
@@ -29,13 +29,13 @@ class ImageAdapter : RecyclerView.Adapter<ImageAdapter.ImageHolder>() {
 
         lateinit var imItem : ImageView
 
-        fun setData(uri : String){
+        fun setData(bitmap : Bitmap){
             imItem = itemView.findViewById(R.id.item_image)
-            imItem.setImageURI(Uri.parse(uri))
+            imItem.setImageBitmap(bitmap)
         }
     }
 
-    fun update(newList : ArrayList<String>){
+    fun update(newList : ArrayList<Bitmap>){
         mainArray.clear()
         mainArray.addAll(newList)
         notifyDataSetChanged()
