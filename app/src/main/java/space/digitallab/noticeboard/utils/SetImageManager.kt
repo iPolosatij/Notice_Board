@@ -1,8 +1,10 @@
 package space.digitallab.noticeboard.utils
-import android.graphics.BitmapFactory
-import android.util.Log
-import androidx.exifinterface.media.ExifInterface
 
+import android.graphics.BitmapFactory
+import androidx.exifinterface.media.ExifInterface
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.withContext
 import java.io.File
 
 object SetImageManager {
@@ -36,12 +38,11 @@ object SetImageManager {
         return  rotation
     }
 
-    fun imageResize(uris : List<String>){
+   suspend fun imageResize(uris : List<String>): String = withContext(Dispatchers.IO){
         val tempList = ArrayList<List<Int>>()
         for(n in uris.indices){
 
             val size = getImageSize(uris[n])
-            Log.d("MyLog", " width : ${size[WIDTH] } height : ${size[HEIGHT]}")
             val imageRatio = size[WIDTH].toFloat()/size[HEIGHT].toFloat()
             if(imageRatio > 1){
 
@@ -61,7 +62,8 @@ object SetImageManager {
                     tempList.add(listOf(size[WIDTH], size[HEIGHT]))
                 }
             }
-            Log.d("MyLog", " width : ${tempList[n][WIDTH] } height : ${tempList[n][HEIGHT]}")
         }
+        delay(10000)
+       return@withContext "Done"
     }
 }

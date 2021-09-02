@@ -1,6 +1,7 @@
 package space.digitallab.noticeboard.fragments
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +9,10 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.adapters.SelectImageRvAdapter
 import space.digitallab.noticeboard.databinding.ListImageFragmentBinding
@@ -21,6 +26,7 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
     val adapter = SelectImageRvAdapter()
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHealper = ItemTouchHelper(dragCallback)
+    private lateinit var job: Job
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         rootElement = ListImageFragmentBinding.inflate(inflater)
         return rootElement.root
@@ -32,7 +38,10 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
         setUpToolbar()
         rootElement.rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
         rootElement.rcViewSelectImage.adapter = adapter
-        SetImageManager.imageResize(newList)
+        job = CoroutineScope(Dispatchers.Main).launch {
+            val text = SetImageManager.imageResize(newList)
+            Log.d("MyLog", "Result : $text")
+        }
         touchHealper.attachToRecyclerView(rootElement.rcViewSelectImage)
         //adapter.updateAdapter(newList, true)
     }
@@ -40,6 +49,7 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
     override fun onDetach() {
         super.onDetach()
         fragmentCloseInterface.onFragmentClose(adapter.mainArray)
+        job.cancel()
     }
 
     private fun setUpToolbar(){
