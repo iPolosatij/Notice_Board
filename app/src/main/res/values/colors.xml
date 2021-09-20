@@ -9,4 +9,8 @@
     <color name="white">#FFFFFFFF</color>
     <color name="accent">#603A77</color>
     <color name="color_red">#F61515</color>
+    <color name="blue_main">#48B5A5</color>
+    <color name="lite_gray">#DADDDD</color>
+    <color name="dark_gray">#858787</color>
+
 </resources>

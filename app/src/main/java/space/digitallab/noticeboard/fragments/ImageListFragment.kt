@@ -22,7 +22,7 @@ import space.digitallab.noticeboard.databinding.ListImageFragmentBinding
 import space.digitallab.noticeboard.dialoghelper.ProgressDialog
 import space.digitallab.noticeboard.utils.ImagePiker
 import space.digitallab.noticeboard.utils.ItemTouchMoveCallback
-import space.digitallab.noticeboard.utils.SetImageManager
+import space.digitallab.noticeboard.utils.ImageManager
 
 class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterface, private val newList : ArrayList<String>?) : Fragment() {
 
@@ -59,7 +59,7 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
     private fun resizeSelectedImage(newList: ArrayList<String>, needClear: Boolean){
         job = CoroutineScope(Dispatchers.Main).launch {
             val dialog = ProgressDialog.createProgressDialog(activity as Activity)
-            val bitmapList = SetImageManager.imageResize(newList)
+            val bitmapList = ImageManager.imageResize(newList)
             dialog.dismiss()
             adapter.updateAdapter(bitmapList, needClear)
         }
@@ -93,7 +93,7 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
         val pBar = rootElement.rcViewSelectImage[position].findViewById<ProgressBar>(R.id.pBar)
         job = CoroutineScope(Dispatchers.Main).launch {
             pBar.visibility = View.VISIBLE
-            val bitmapList = SetImageManager.imageResize(listOf(uri))
+            val bitmapList = ImageManager.imageResize(listOf(uri))
             pBar.visibility = View.GONE
             adapter.mainArray[position] = bitmapList[0]
             adapter.notifyItemChanged(position)

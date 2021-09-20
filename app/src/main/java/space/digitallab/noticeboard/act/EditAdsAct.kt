@@ -5,11 +5,9 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.fxn.pix.Pix
 import com.fxn.utility.PermUtil
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.adapters.ImageAdapter
@@ -19,14 +17,14 @@ import space.digitallab.noticeboard.fragments.FragmentCloseInterface
 import space.digitallab.noticeboard.fragments.ImageListFragment
 import space.digitallab.noticeboard.utils.CitySearchHelper
 import space.digitallab.noticeboard.utils.ImagePiker
-import space.digitallab.noticeboard.utils.SetImageManager
+import space.digitallab.noticeboard.utils.ImageManager
 
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
-    private var chooseImageFragment : ImageListFragment? = null
+    var chooseImageFragment : ImageListFragment? = null
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
-    private lateinit var imageAdapter : ImageAdapter
+    lateinit var imageAdapter : ImageAdapter
     var editImagePosition = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,28 +36,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == RESULT_OK && requestCode == ImagePiker.REQUEST_CODE_GET_IMAGES) {
-
-            if(data != null) {
-
-                val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-
-                if(returnValues?.size!! > 1 && chooseImageFragment == null) {
-                    openChooseImageFragment(returnValues)
-                } else if(returnValues.size == 1 && chooseImageFragment == null){
-                    val tempList = SetImageManager.getImageSize(returnValues[0])
-                    //imageAdapter.update(returnValues)
-                    Log.d("MyLog", "Image width :  ${tempList[0]}")
-                    Log.d("MyLog", "Image height :  ${tempList[1]}")
-                } else if (chooseImageFragment != null){
-                    chooseImageFragment?.updateAdapter(returnValues)
-                }
-            }
-        } else if(resultCode == RESULT_OK && requestCode == ImagePiker.REQUEST_CODE_GET_SINGLE_IMAGE){
-
-            val uris = data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-            chooseImageFragment?.setSingleImage(uris?.get(0)!!, editImagePosition)
-        }
+        ImagePiker.showSelectedImages(resultCode, requestCode, data, this)
     }
 
     @SuppressLint("MissingSuperCall")
@@ -128,7 +105,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         chooseImageFragment = null
     }
 
-    private fun openChooseImageFragment(newList : ArrayList<String>?){
+    fun openChooseImageFragment(newList : ArrayList<String>?){
 
         chooseImageFragment = ImageListFragment(this, newList)
         rootElement.scrollViewMine.visibility = View.GONE

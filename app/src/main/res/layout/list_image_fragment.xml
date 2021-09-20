@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/dark_gray">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rcViewSelectImage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/dark_gray"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tb"
+        app:layout_constraintStart_toStartOf="@+id/tb"
         app:layout_constraintTop_toBottomOf="@+id/tb"
         app:layout_constraintVertical_bias="1.0" />
 
@@ -21,10 +21,12 @@
         android:id="@+id/tb"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="?attr/colorPrimary"
+        android:background="@color/white"
         android:minHeight="?attr/actionBarSize"
-        android:theme="?attr/actionBarTheme"
-        app:navigationIcon="?attr/homeAsUpIndicator"
+        android:theme="@style/ActionBarCustom"
+        app:layout_constraintBottom_toTopOf="@+id/rcViewSelectImage"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="1dp"/>
+        app:navigationIcon="?attr/homeAsUpIndicator" />
 </androidx.constraintlayout.widget.ConstraintLayout>
