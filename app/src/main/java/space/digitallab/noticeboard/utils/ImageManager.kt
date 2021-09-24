@@ -1,15 +1,12 @@
 package space.digitallab.noticeboard.utils
 
-import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.media.ExifInterface
-import android.net.Uri
+import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import java.io.File
-import java.io.InputStream
 
 object ImageManager {
 
@@ -41,6 +38,14 @@ object ImageManager {
             0
         }
         return  rotation
+    }
+
+    fun chooseScaleType(im : ImageView, bitmap: Bitmap){
+        if(bitmap.width > bitmap.height){
+            im.scaleType = ImageView.ScaleType.CENTER_CROP
+        }else{
+            im.scaleType = ImageView.ScaleType.CENTER_INSIDE
+        }
     }
 
     suspend fun imageResize(uris : List<String>): List<Bitmap> = withContext(Dispatchers.IO){
