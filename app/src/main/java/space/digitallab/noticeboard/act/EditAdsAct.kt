@@ -17,7 +17,6 @@ import space.digitallab.noticeboard.fragments.FragmentCloseInterface
 import space.digitallab.noticeboard.fragments.ImageListFragment
 import space.digitallab.noticeboard.utils.CitySearchHelper
 import space.digitallab.noticeboard.utils.ImagePiker
-import space.digitallab.noticeboard.utils.ImageManager
 
 
 class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {

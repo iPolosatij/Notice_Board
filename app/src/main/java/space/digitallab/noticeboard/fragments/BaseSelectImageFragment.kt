@@ -2,21 +2,21 @@ package space.digitallab.noticeboard.fragments
 
 import android.app.Activity
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.gms.ads.AdRequest
-import com.google.android.gms.ads.MobileAds
-import space.digitallab.noticeboard.databinding.ListImageFragmentBinding
+import com.google.android.gms.ads.*
+import com.google.android.gms.ads.interstitial.InterstitialAd
+import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback
+import space.digitallab.noticeboard.R
 
-open class BaseSelectImageFragment: Fragment() {
+open class BaseAdsFragment: Fragment(), InterAdsClose {
 
-    lateinit var binding : ListImageFragmentBinding
+    lateinit var adView: AdView
+    private var mInterstitialAd: InterstitialAd? = null
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        binding = ListImageFragmentBinding.inflate(layoutInflater)
-        return binding.root
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        loadInterAd()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -26,23 +26,65 @@ open class BaseSelectImageFragment: Fragment() {
 
     override fun onResume() {
         super.onResume()
-        binding.adView.resume()
+        adView.resume()
     }
 
     override fun onPause() {
         super.onPause()
-        binding.adView.pause()
+        adView.pause()
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        binding.adView.destroy()
+        adView.destroy()
     }
 
     private fun initAds(){
 
         MobileAds.initialize(activity as Activity)
         val adRequest = AdRequest.Builder().build()
-        binding.adView.loadAd(adRequest)
+        adView.loadAd(adRequest)
     }
+
+    private fun loadInterAd(){
+
+        val adRequest = AdRequest.Builder().build()
+
+        InterstitialAd.load(context as Activity, getString(R.string.ad_inter_id), adRequest, object : InterstitialAdLoadCallback(){
+
+            override fun onAdLoaded(ad: InterstitialAd) {
+                mInterstitialAd = ad
+
+            }
+        })
+    }
+
+    fun showInterAd(){
+
+        if(mInterstitialAd != null){
+
+            mInterstitialAd?.fullScreenContentCallback = object : FullScreenContentCallback(){
+
+                override fun onAdDismissedFullScreenContent() {
+
+                    onClose()
+
+                }
+
+                override fun onAdFailedToShowFullScreenContent(ad: AdError) {
+
+                    onClose()
+
+                }
+            }
+            mInterstitialAd?.show(activity as Activity)
+
+        }else{
+
+            onClose()
+
+        }
+    }
+
+    override fun onClose() {}
 }

@@ -3,8 +3,10 @@ package space.digitallab.noticeboard.fragments
 import android.app.Activity
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
@@ -16,20 +18,27 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.adapters.SelectImageRvAdapter
+import space.digitallab.noticeboard.databinding.ListImageFragmentBinding
 import space.digitallab.noticeboard.dialoghelper.ProgressDialog
 import space.digitallab.noticeboard.utils.AdapterCallBack
 import space.digitallab.noticeboard.utils.ImageManager
 import space.digitallab.noticeboard.utils.ImagePiker
 import space.digitallab.noticeboard.utils.ItemTouchMoveCallback
 
-class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterface, private val newList : ArrayList<String>?) : BaseSelectImageFragment(), AdapterCallBack {
+class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterface, private val newList : ArrayList<String>?) : BaseAdsFragment(), AdapterCallBack {
 
-
+    lateinit var binding : ListImageFragmentBinding
     val adapter = SelectImageRvAdapter(this)
     val dragCallback = ItemTouchMoveCallback(adapter)
     val touchHealper = ItemTouchHelper(dragCallback)
     private var job: Job? = null
     private var addItem: MenuItem? = null
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        binding = ListImageFragmentBinding.inflate(layoutInflater)
+        adView = binding.adView
+        return binding.root
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -59,6 +68,11 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
         job?.cancel()
     }
 
+    override fun onClose() {
+        super.onClose()
+        activity?.supportFragmentManager?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
+    }
+
     private fun resizeSelectedImage(newList: ArrayList<String>, needClear: Boolean){
         job = CoroutineScope(Dispatchers.Main).launch {
             val dialog = ProgressDialog.createProgressDialog(activity as Activity)
@@ -78,7 +92,7 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
             addItem = tb.menu.findItem(R.id.add_image)
 
             tb.setNavigationOnClickListener {
-                activity?.supportFragmentManager?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
+                showInterAd()
             }
             deleteItem.setOnMenuItemClickListener {
                 adapter.updateAdapter(ArrayList(), true)
