@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "543814615381",
+    "firebase_url": "https://noticeboardkotlin-default-rtdb.europe-west1.firebasedatabase.app",
     "project_id": "noticeboardkotlin",
     "storage_bucket": "noticeboardkotlin.appspot.com"
   },

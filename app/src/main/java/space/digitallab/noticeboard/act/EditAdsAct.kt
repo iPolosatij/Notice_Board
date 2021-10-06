@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fxn.utility.PermUtil
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.adapters.ImageAdapter
+import space.digitallab.noticeboard.database.DbManager
 import space.digitallab.noticeboard.databinding.ActivityEditAdsBinding
 import space.digitallab.noticeboard.dialogs.DialogSpinnerHelper
 import space.digitallab.noticeboard.fragments.FragmentCloseInterface
@@ -99,8 +100,11 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
             openChooseImageFragment(null)
             chooseImageFragment?.updateAdapterFromEdit(imageAdapter.mainArray)
         }
+    }
 
-
+    fun onClickPublish(view: View){
+        val dbManager = DbManager()
+        dbManager.publishAd()
     }
 
     override fun onFragmentClose(list : ArrayList<Bitmap>) {
