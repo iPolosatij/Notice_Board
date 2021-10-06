@@ -5,6 +5,7 @@
     android:id="@+id/place_holder"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="5dp"
     android:background="@color/dark_gray"
     tools:context=".act.EditAdsAct">
 
@@ -25,6 +26,7 @@
             android:orientation="vertical">
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:cardBackgroundColor="@color/white"
@@ -76,6 +78,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/card_adress"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="5dp"
@@ -154,7 +157,7 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/tel"
+                        android:id="@+id/tvTel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -184,7 +187,7 @@
                         android:textStyle="bold" />
 
                     <EditText
-                        android:id="@+id/index"
+                        android:id="@+id/tvIndex"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -202,10 +205,138 @@
                         android:layout_marginRight="10dp"
                         android:layout_marginBottom="5dp"
                         android:background="@color/blue_main"
-                        android:orientation="horizontal"></LinearLayout>
+                        android:orientation="horizontal">
+
+                    </LinearLayout>
+
+                    <CheckBox
+                        android:id="@+id/withSend"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:text="@string/with_send" />
+
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_category"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="5dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardCornerRadius="5dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="5dp"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tvTitleCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/category"
+                        android:textColor="@color/blue_main"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tvCategory"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:onClick="onClickSelectCategory"
+                        android:padding="10dp"
+                        android:text="@string/select_category"
+                        android:textSize="18sp" />
+
+                    <LinearLayout
+                        android:id="@+id/deliver01"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/blue_main"
+                        android:orientation="horizontal"></LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTitlePrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/price"
+                        android:textColor="@color/blue_main"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/tvPrice"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:ems="10"
+                        android:hint="@string/price_hint"
+                        android:inputType="number"
+                        android:padding="10dp"
+                        android:textColorHint="@color/dark_gray" />
+
+                    <LinearLayout
+                        android:id="@+id/deliver02"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/blue_main"
+                        android:orientation="horizontal"></LinearLayout>
+
+                    <TextView
+                        android:id="@+id/tvTitleDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/description"
+                        android:textColor="@color/blue_main"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/tvDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:ems="10"
+                        android:hint="@string/description_hint"
+                        android:inputType="textMultiLine"
+                        android:padding="10dp"
+                        android:textColorHint="@color/dark_gray" />
+
+                    <LinearLayout
+                        android:id="@+id/deliver03"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="5dp"
+                        android:background="@color/blue_main"
+                        android:orientation="horizontal"></LinearLayout>
+
+                </LinearLayout>
+
+            </androidx.cardview.widget.CardView>
+
+            <Button
+                android:id="@+id/btPublish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/publish"
+                android:textColor="@color/blue_main"
+                app:backgroundTint="@color/white" />
+
         </LinearLayout>
     </ScrollView>
+
 </FrameLayout>

@@ -7,6 +7,7 @@
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/drawable/edit_image_bg_normal.xml" value="0.33" />
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/drawable/edit_image_bg_normal_pressed.xml" value="0.3828125" />
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/drawable/edit_image_bg_pressed.xml" value="0.3828125" />
+        <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/drawable/edit_image_button.xml" value="0.3828125" />
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/drawable/edit_image_pg.xml" value="0.2703125" />
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/drawable/ic_add_image.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/drawable/ic_delete_image.xml" value="0.14635416666666667" />
@@ -14,7 +15,7 @@
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/drawable/ic_edit.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/drawable/ic_launcher_background.xml" value="0.14635416666666667" />
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/drawable/ic_new_ads.xml" value="0.14635416666666667" />
-        <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/layout/activity_edit_ads.xml" value="0.5" />
+        <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/layout/activity_edit_ads.xml" value="0.33" />
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/layout/image_adapter_item.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/9miha/AndroidStudioProjects/Notice_Board/app/src/main/res/layout/list_image_fragment.xml" value="0.25" />

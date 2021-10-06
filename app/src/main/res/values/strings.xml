@@ -48,4 +48,12 @@
     <string name="index">Индекс</string>
     <string name="tel">Телефон</string>
     <string name="tel_hint">номер телефона</string>
+    <string name="category">Категория</string>
+    <string name="select_category">*Выберите категорию</string>
+    <string name="price">Цена</string>
+    <string name="price_hint">*Укажите цену</string>
+    <string name="description">Описание</string>
+    <string name="description_hint">*Напишите подробно</string>
+    <string name="with_send">Возможна отправка</string>
+    <string name="publish">Опубликовать</string>
 </resources>
