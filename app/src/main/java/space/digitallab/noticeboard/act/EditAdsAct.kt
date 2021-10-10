@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fxn.utility.PermUtil
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.adapters.ImageAdapter
+import space.digitallab.noticeboard.data.Notice
 import space.digitallab.noticeboard.database.DbManager
 import space.digitallab.noticeboard.databinding.ActivityEditAdsBinding
 import space.digitallab.noticeboard.dialogs.DialogSpinnerHelper
@@ -26,6 +27,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     private val dialog = DialogSpinnerHelper()
     lateinit var imageAdapter : ImageAdapter
     var editImagePosition = 0
+    private val dbManager = DbManager()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -103,8 +105,25 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickPublish(view: View){
-        val dbManager = DbManager()
-        dbManager.publishAd()
+        dbManager.publishNotice(fillNotice())
+    }
+
+    private fun fillNotice(): Notice{
+        val notice: Notice
+        rootElement.apply {
+            notice = Notice(
+                tvCountry.text.toString(),
+                tvCity.text.toString(),
+                tvTel.text.toString(),
+                tvIndex.text.toString(),
+                withSend.isChecked.toString(),
+                tvCategory.text.toString(),
+                tvPrice.text.toString(),
+                tvDescription.text.toString(),
+                dbManager.db.push().key
+            )
+        }
+        return notice
     }
 
     override fun onFragmentClose(list : ArrayList<Bitmap>) {
