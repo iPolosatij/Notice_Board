@@ -24,7 +24,7 @@ class DbManager {
                 for(item in snapshot.children){
 
                     val notice = item.children.iterator().next().child("notice").getValue(Notice::class.java)
-                        Log.d("MyLog", "Data $notice")
+                        Log.d("MyLog", "Data ${notice?.tel}")
 
                 }
 
