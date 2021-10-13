@@ -16,6 +16,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import space.digitallab.noticeboard.act.EditAdsAct
+import space.digitallab.noticeboard.database.DbManager
 import space.digitallab.noticeboard.databinding.ActivityMainBinding
 import space.digitallab.noticeboard.dialoghelper.DialogConst
 import space.digitallab.noticeboard.dialoghelper.DialogHelper
@@ -28,13 +29,15 @@ import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
      private lateinit var rootElement: ActivityMainBinding
      private val dialogHelper = DialogHelper(this)
      val mAuth = FirebaseAuth.getInstance()
+     val dbManager =  DbManager()
 
      override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        rootElement = ActivityMainBinding.inflate(layoutInflater)
-        val view = rootElement.root
-        setContentView(view)
-        init()
+         super.onCreate(savedInstanceState)
+         rootElement = ActivityMainBinding.inflate(layoutInflater)
+         val view = rootElement.root
+         setContentView(view)
+         init()
+         dbManager.readDataFromDb()
      }
 
      override fun onOptionsItemSelected(item: MenuItem): Boolean {
