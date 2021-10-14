@@ -1,6 +1,5 @@
 package space.digitallab.noticeboard.database
 
-import android.util.Log
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -21,13 +20,17 @@ class DbManager {
         db.addListenerForSingleValueEvent(object : ValueEventListener{
 
             override fun onDataChange(snapshot: DataSnapshot) {
+                val noticeList = ArrayList<Notice>()
+
                 for(item in snapshot.children){
-
-                    val notice = item.children.iterator().next().child("notice").getValue(Notice::class.java)
-                        Log.d("MyLog", "Data ${notice?.tel}")
-
+                    val notice = item
+                        .children
+                        .iterator()
+                        .next()
+                        .child("notice")
+                        .getValue(Notice::class.java)
+                    notice?.let { noticeList.add(it) }
                 }
-
             }
 
             override fun onCancelled(error: DatabaseError) {}
