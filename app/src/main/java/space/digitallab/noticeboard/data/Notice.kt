@@ -6,6 +6,7 @@ data class Notice(
     val tel: String? = null,
     val index: String? = null,
     val withSend: String? = null,
+    val title: String? = null,
     val category: String? = null,
     val price: String? = null,
     val description: String? = null,

@@ -10,26 +10,31 @@ import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import space.digitallab.noticeboard.act.EditAdsAct
+import space.digitallab.noticeboard.adapters.NoticeRcAdapter
+import space.digitallab.noticeboard.data.Notice
 import space.digitallab.noticeboard.database.DbManager
+import space.digitallab.noticeboard.database.ReadDataCallback
 import space.digitallab.noticeboard.databinding.ActivityMainBinding
 import space.digitallab.noticeboard.dialoghelper.DialogConst
 import space.digitallab.noticeboard.dialoghelper.DialogHelper
 import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
 
 
- class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ReadDataCallback {
 
      private lateinit var tvAccount: TextView
      private lateinit var rootElement: ActivityMainBinding
      private val dialogHelper = DialogHelper(this)
      val mAuth = FirebaseAuth.getInstance()
-     val dbManager =  DbManager()
+     val dbManager =  DbManager(this)
+     val adapter = NoticeRcAdapter()
 
      override fun onCreate(savedInstanceState: Bundle?) {
          super.onCreate(savedInstanceState)
@@ -37,6 +42,7 @@ import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
          val view = rootElement.root
          setContentView(view)
          init()
+         initRecyclerView()
          dbManager.readDataFromDb()
      }
 
@@ -92,6 +98,14 @@ import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
 
     }
 
+     private fun initRecyclerView(){
+         rootElement.apply {
+             mainContent.rvNoticeList.layoutManager = LinearLayoutManager(this@MainActivity)
+             mainContent.rvNoticeList.adapter = adapter
+
+         }
+     }
+
      override fun onNavigationItemSelected(item: MenuItem): Boolean {
 
         when(item.itemId){
@@ -133,4 +147,8 @@ import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
              firebaseUser.email
          }
      }
-}
+
+     override fun readData(list: List<Notice>) {
+         adapter.updateAdapter(list as ArrayList<Notice>)
+     }
+ }

@@ -47,7 +47,9 @@
     <string name="city">Город</string>
     <string name="index">Индекс</string>
     <string name="tel">Телефон</string>
-    <string name="tel_hint">номер телефона</string>
+    <string name="tel_hint">Номер телефона</string>
+    <string name="notice_title">Заголовок</string>
+    <string name="notice_title_hint">*Заголовок</string>
     <string name="category">Категория</string>
     <string name="select_category">*Выберите категорию</string>
     <string name="price">Цена</string>

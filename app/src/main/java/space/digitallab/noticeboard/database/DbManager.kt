@@ -8,7 +8,9 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import space.digitallab.noticeboard.data.Notice
 
-class DbManager {
+class DbManager(
+    val readDataCallback:ReadDataCallback?
+) {
     val db = Firebase.database.getReference("Main")
     val auth = Firebase.auth
 
@@ -31,6 +33,7 @@ class DbManager {
                         .getValue(Notice::class.java)
                     notice?.let { noticeList.add(it) }
                 }
+                readDataCallback?.readData(noticeList)
             }
 
             override fun onCancelled(error: DatabaseError) {}

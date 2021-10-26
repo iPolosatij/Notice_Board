@@ -11,7 +11,7 @@ class NoticeRcAdapter: RecyclerView.Adapter<NoticeRcAdapter.NoticeHolder>() {
     val noticeList = ArrayList<Notice>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeHolder {
-        val binding = NoticeListItemBinding.inflate(LayoutInflater.from(parent.context))
+        val binding = NoticeListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return NoticeHolder(binding)
     }
 
@@ -33,6 +33,7 @@ class NoticeRcAdapter: RecyclerView.Adapter<NoticeRcAdapter.NoticeHolder>() {
 
         fun setData(notice: Notice){
             binding.apply {
+                tvTitle.text = notice.title
                 tvDiscription.text = notice.description
                 tvPrice.text = notice.price
             }
