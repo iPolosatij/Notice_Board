@@ -27,4 +27,9 @@
     <style name="ActionBarCustom" >
         <item name="android:textColorSecondary">@color/blue_main</item>
     </style>
+
+    <style name="ToolbarMainStyle" parent="Theme.AppCompat.Light.DarkActionBar" >
+        <item name="colorControlNormal"> @color/blue_main</item>
+        <item name="fontFamily">sans-serif-condensed-medium</item>
+    </style>
 </resources>

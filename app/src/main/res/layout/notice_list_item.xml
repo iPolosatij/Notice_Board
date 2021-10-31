@@ -21,43 +21,58 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center_horizontal"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="5dp">
 
             <TextView
                 android:id="@+id/tvTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
+                android:background="@color/blue_main"
+                android:fontFamily="sans-serif-medium"
+                android:padding="5dp"
                 android:text="TextView"
-                android:textColor="@color/black" />
+                android:textColor="@color/white"
+                android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/mineImage"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:layout_marginTop="10dp"
-                tools:srcCompat="@tools:sample/backgrounds/scenic" />
+                android:background="@color/dark_gray"
+                tools:srcCompat="@drawable/ic_default_image" />
 
             <TextView
                 android:id="@+id/tvDiscription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
+                android:fontFamily="sans-serif-medium"
                 android:gravity="center_horizontal"
-                android:text="TextView" />
+                android:text="TextView"
+                android:textColor="@color/black" />
 
             <TextView
                 android:id="@+id/tvPrice"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="end"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="10dp"
                 android:layout_marginEnd="5dp"
+                android:background="@drawable/edit_image_pg"
+                android:fontFamily="sans-serif-medium"
                 android:gravity="center_horizontal"
-                android:text="TextView" />
+                android:padding="5dp"
+                android:text="TextView"
+                android:textColor="@color/blue_main"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -82,12 +97,15 @@
                         android:id="@+id/tvViewCounter"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="sans-serif-medium"
                         android:text="TextView" />
 
                     <ImageButton
                         android:id="@+id/ibFavorit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
                         android:background="@android:color/transparent"
                         app:srcCompat="@drawable/ic_favorit_no_pressed" />
 
@@ -95,6 +113,8 @@
                         android:id="@+id/tvFavorit"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:fontFamily="sans-serif-medium"
                         android:text="TextView" />
                 </LinearLayout>
 
@@ -116,6 +136,7 @@
                         android:id="@+id/ibDelete"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="25dp"
                         android:background="@android:color/transparent"
                         app:srcCompat="@drawable/ic_delete_image" />
 

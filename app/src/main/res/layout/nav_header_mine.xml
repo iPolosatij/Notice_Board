@@ -4,7 +4,7 @@
     android:id="@+id/conteiner"
     android:layout_width="match_parent"
     android:layout_height="170dp"
-    android:background="@color/accent">
+    android:background="@color/blue_main">
 
     <ImageView
         android:id="@+id/im_acaunt_image"
