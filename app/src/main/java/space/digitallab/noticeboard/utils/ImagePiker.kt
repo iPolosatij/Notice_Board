@@ -2,11 +2,14 @@ package space.digitallab.noticeboard.utils
 
 import android.content.Intent
 import android.graphics.Bitmap
-import android.util.Log
 import android.view.View
+import androidx.activity.result.ActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import com.fxn.pix.Options
 import com.fxn.pix.Pix
+import com.fxn.utility.PermUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -18,43 +21,55 @@ object ImagePiker {
     const val REQUEST_CODE_GET_SINGLE_IMAGE = 998
     const val MAX_IMAGE_COUNT = 3
 
-    fun getImages(act:AppCompatActivity, imageCounter: Int, rCode : Int){
-        val options = Options.init()
-                .setRequestCode(rCode)                       //Request code for activity results
-                .setCount(imageCounter)                                                   //Number of images to restict selection count
-                .setFrontfacing(false)                                         //Front Facing camera on start
-                .setMode(Options.Mode.Picture)                                 //Option to select only pictures or videos or both
-                .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)     //Orientaion
-                .setPath("/pix/images")                                        //Custom Path For media Storage
-
-        Pix.start(act, options)
+    fun getOptions(imageCounter: Int): Options {
+        return Options.init()
+            .setCount(imageCounter)
+            .setFrontfacing(false)
+            .setMode(Options.Mode.Picture)
+            .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
+            .setPath("/pix/images")
     }
 
-    fun showSelectedImages(resultCode: Int, requestCode: Int, data: Intent?, edAct: EditAdsAct ){
-        if (resultCode == AppCompatActivity.RESULT_OK && requestCode == REQUEST_CODE_GET_IMAGES) {
-
-            if(data != null) {
-
-                val returnValues = data.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-
-                if(returnValues?.size!! > 1 && edAct.chooseImageFragment == null) {
-                    edAct.openChooseImageFragment(returnValues)
-                } else if(returnValues.size == 1 && edAct.chooseImageFragment == null){
-                    CoroutineScope(Dispatchers.Main).launch{
-                        edAct.rootElement.pBarLoad.visibility = View.VISIBLE
-                        val bitmapArray = ImageManager.imageResize(returnValues) as ArrayList<Bitmap>
-                        edAct.rootElement.pBarLoad.visibility = View.GONE
-                        edAct.imageAdapter.update(bitmapArray)
-                    }
-                } else if (edAct.chooseImageFragment != null) {
-                    edAct.chooseImageFragment?.updateAdapter(returnValues)
-                }
-            }
-        } else if(resultCode == AppCompatActivity.RESULT_OK && requestCode == REQUEST_CODE_GET_SINGLE_IMAGE){
-
-            val uris = data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-            edAct.chooseImageFragment?.setSingleImage(uris?.get(0)!!, edAct.editImagePosition)
+    fun launcher(context: EditAdsAct, launcher: ActivityResultLauncher<Intent>?, imageCounter: Int){
+        PermUtil.checkForCamaraWritePermissions(context){
+            launcher?.launch(Intent(context, Pix::class.java).apply {
+                putExtra("options", getOptions(imageCounter))
+            })
         }
     }
 
+    fun getLauncherForMultiSelectGetImages(context: EditAdsAct): ActivityResultLauncher<Intent> {
+        return context.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
+            result: ActivityResult ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                if(result.data != null) {
+                    val returnValues = result.data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                    if(returnValues?.size!! > 1 && context.chooseImageFragment == null) {
+                        context.openChooseImageFragment(returnValues)
+                    } else if(returnValues.size == 1 && context.chooseImageFragment == null){
+                        CoroutineScope(Dispatchers.Main).launch{
+                            context.rootElement.pBarLoad.visibility = View.VISIBLE
+                            val bitmapArray = ImageManager.imageResize(returnValues) as ArrayList<Bitmap>
+                            context.rootElement.pBarLoad.visibility = View.GONE
+                            context.imageAdapter.update(bitmapArray) }
+                    } else if (context.chooseImageFragment != null) {
+                       context.chooseImageFragment?.updateAdapter(returnValues)
+                    }
+                }
+            }
+        }
+    }
+
+    fun getLauncherForSingleImage(context: EditAdsAct ): ActivityResultLauncher<Intent> {
+        return context.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
+                result: ActivityResult ->
+            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                val uris = result.data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
+                context.chooseImageFragment?.setSingleImage(
+                    uris?.get(0)!!,
+                    context.editImagePosition
+                )
+            }
+        }
+    }
 }

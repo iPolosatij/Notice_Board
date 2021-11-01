@@ -1,12 +1,12 @@
 package space.digitallab.noticeboard.act
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import com.fxn.utility.PermUtil
 import space.digitallab.noticeboard.R
@@ -28,6 +28,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     lateinit var imageAdapter : ImageAdapter
     var editImagePosition = 0
     private val dbManager = DbManager(null)
+    var launcherMultiSelectImage: ActivityResultLauncher<Intent>? = null
+    var launcherSingleSelectImage: ActivityResultLauncher<Intent>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +38,6 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         init()
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        ImagePiker.showSelectedImages(resultCode, requestCode, data, this)
-    }
-
-    @SuppressLint("MissingSuperCall")
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -52,7 +48,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
                 // If request is cancelled, the result arrays are empty.
                 if (grantResults.isNotEmpty() && grantResults[0] === PackageManager.PERMISSION_GRANTED) {
-                    ImagePiker.getImages(this, 3, ImagePiker.REQUEST_CODE_GET_IMAGES)
+                   // ImagePiker.getImages(this, 3, ImagePiker.REQUEST_CODE_GET_IMAGES)
                 } else {
                     Toast.makeText(
                         this,
@@ -63,12 +59,15 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
                 return
             }
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun init(){
         dialog.init(this)
         imageAdapter = ImageAdapter()
         rootElement.vpImages.adapter = imageAdapter
+        launcherMultiSelectImage = ImagePiker.getLauncherForMultiSelectGetImages(this)
+        launcherSingleSelectImage = ImagePiker.getLauncherForSingleImage(this)
     }
 
     //OnClicks
@@ -97,7 +96,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     fun onClickGetImages(view: View){
         if(imageAdapter.mainArray.size == 0){
-            ImagePiker.getImages(this, 3, ImagePiker.REQUEST_CODE_GET_IMAGES)
+            ImagePiker.launcher(this, launcherMultiSelectImage, ImagePiker.MAX_IMAGE_COUNT)
         }else{
             openChooseImageFragment(null)
             chooseImageFragment?.updateAdapterFromEdit(imageAdapter.mainArray)
