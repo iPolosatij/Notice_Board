@@ -29,8 +29,8 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
 
     lateinit var binding : ListImageFragmentBinding
     val adapter = SelectImageRvAdapter(this)
-    val dragCallback = ItemTouchMoveCallback(adapter)
-    val touchHealper = ItemTouchHelper(dragCallback)
+    private val dragCallback = ItemTouchMoveCallback(adapter)
+    val touchHelper = ItemTouchHelper(dragCallback)
     private var job: Job? = null
     private var addItem: MenuItem? = null
 
@@ -45,7 +45,7 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
 
         setUpToolbar()
         binding.apply {
-            touchHealper.attachToRecyclerView(rcViewSelectImage)
+            touchHelper.attachToRecyclerView(rcViewSelectImage)
             rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
             rcViewSelectImage.adapter = adapter
             if(newList != null) resizeSelectedImage(newList, true)

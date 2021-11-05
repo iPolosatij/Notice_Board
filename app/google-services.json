@@ -23,6 +23,14 @@
           }
         },
         {
+          "client_id": "543814615381-fco7486hgr801mvsoc44o7mhmgvrhp4h.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "space.digitallab.noticeboard",
+            "certificate_hash": "27a869b67ec06c08fc5c83751ff7b1396ebffff8"
+          }
+        },
+        {
           "client_id": "543814615381-poarmq6rimrjf5n9l5787nigkiu6ocj1.apps.googleusercontent.com",
           "client_type": 3
         }
