@@ -10,5 +10,6 @@ data class Notice(
     val category: String? = null,
     val price: String? = null,
     val description: String? = null,
-    val key: String? = null
+    val key: String? = null,
+    val uid: String? = null
 )

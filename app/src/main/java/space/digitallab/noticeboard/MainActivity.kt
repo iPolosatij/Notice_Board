@@ -14,8 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.common.api.ApiException
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import space.digitallab.noticeboard.act.EditAdsAct
 import space.digitallab.noticeboard.adapters.NoticeRcAdapter
 import space.digitallab.noticeboard.data.Notice
@@ -32,9 +33,9 @@ import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
      private lateinit var tvAccount: TextView
      private lateinit var rootElement: ActivityMainBinding
      private val dialogHelper = DialogHelper(this)
-     val mAuth = FirebaseAuth.getInstance()
+     val mAuth = Firebase.auth
      val dbManager =  DbManager(this)
-     val adapter = NoticeRcAdapter()
+     val adapter = NoticeRcAdapter(mAuth)
 
      override fun onCreate(savedInstanceState: Bundle?) {
          super.onCreate(savedInstanceState)

@@ -1,18 +1,20 @@
 package space.digitallab.noticeboard.adapters
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
 import space.digitallab.noticeboard.data.Notice
 import space.digitallab.noticeboard.databinding.NoticeListItemBinding
 
-class NoticeRcAdapter: RecyclerView.Adapter<NoticeRcAdapter.NoticeHolder>() {
+class NoticeRcAdapter(val auth: FirebaseAuth): RecyclerView.Adapter<NoticeRcAdapter.NoticeHolder>() {
 
     val noticeList = ArrayList<Notice>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeHolder {
         val binding = NoticeListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NoticeHolder(binding)
+        return NoticeHolder(binding, auth)
     }
 
     override fun onBindViewHolder(holder: NoticeHolder, position: Int) {
@@ -29,7 +31,7 @@ class NoticeRcAdapter: RecyclerView.Adapter<NoticeRcAdapter.NoticeHolder>() {
         notifyDataSetChanged()
     }
 
-    class NoticeHolder(val binding: NoticeListItemBinding) : RecyclerView.ViewHolder(binding.root) {
+    class NoticeHolder(val binding: NoticeListItemBinding,val auth: FirebaseAuth) : RecyclerView.ViewHolder(binding.root) {
 
         fun setData(notice: Notice){
             binding.apply {
@@ -37,7 +39,15 @@ class NoticeRcAdapter: RecyclerView.Adapter<NoticeRcAdapter.NoticeHolder>() {
                 tvDiscription.text = notice.description
                 tvPrice.text = notice.price
             }
+            ownerPanelVisible(isOwner(notice))
         }
 
+        private fun isOwner(notice: Notice): Boolean{
+            return notice.uid == auth.uid
+        }
+
+        private fun ownerPanelVisible(isOwner: Boolean){
+            if(isOwner) binding.ownerPanel.visibility = View.VISIBLE
+        }
     }
 }
