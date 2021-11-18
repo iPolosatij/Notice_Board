@@ -3,7 +3,6 @@
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
@@ -45,21 +44,13 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
          initRecyclerView()
          observeVm()
          firebaseViewModel.loadAllNotice()
+         bottomMenuOnClick()
      }
 
-     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-         if(item.itemId == R.id.id_new_ads){
-             val i = Intent(this, EditAdsAct::class.java)
-             startActivity(i)
-         }
-         return super.onOptionsItemSelected(item)
+     override fun onResume() {
+         super.onResume()
+         rootElement.mainContent.bottonNavView.selectedItemId = R.id.home
      }
-
-     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-         menuInflater.inflate(R.menu.main_menu, menu)
-         return super.onCreateOptionsMenu(menu)
-     }
-
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
          if(requestCode == GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE){
@@ -97,7 +88,31 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
          rootElement.navView.setNavigationItemSelectedListener(this)
          tvAccount = rootElement.navView.getHeaderView(0).findViewById(R.id.tv_acaunt_email)
 
-    }
+     }
+
+     private fun bottomMenuOnClick() = with(rootElement.mainContent.bottonNavView) {
+         this.setOnNavigationItemSelectedListener { item ->
+             when (item.itemId) {
+                 R.id.newNotice -> {
+                     val i = Intent(this@MainActivity, EditAdsAct::class.java)
+                     startActivity(i)
+                 }
+
+                 R.id.myNotice -> {
+                     Toast.makeText(this@MainActivity, "My notice", Toast.LENGTH_SHORT).show()
+                 }
+
+                 R.id.favoriteNotice -> {
+                     Toast.makeText(this@MainActivity, "Favorite notice", Toast.LENGTH_SHORT).show()
+                 }
+
+                 R.id.home -> {
+                     Toast.makeText(this@MainActivity, "Home", Toast.LENGTH_SHORT).show()
+                 }
+             }
+             true
+         }
+     }
 
      private fun initRecyclerView(){
          rootElement.apply {

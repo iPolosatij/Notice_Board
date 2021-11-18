@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:id="@+id/newNotice"
+    android:orderInCategory="4"
+    android:title="New Notice"
+    android:icon="@drawable/ic_new_ads"
+    />
+    <item
+        android:id="@+id/myNotice"
+    android:orderInCategory="3"
+    android:title="My Notice"
+    android:icon="@drawable/ic_my"
+    />
+    <item
+        android:id="@+id/favoriteNotice"
+    android:orderInCategory="2"
+    android:title="Favorite Notice"
+    android:icon="@drawable/ic_favorit_no_pressed"
+    />
+    <item
+        android:id="@+id/home"
+    android:orderInCategory="1"
+    android:title="Home"
+    android:icon="@drawable/ic_home"
+    />
+</menu>
