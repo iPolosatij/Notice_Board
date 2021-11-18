@@ -11,12 +11,12 @@ import androidx.appcompat.app.AppCompatActivity
 import com.fxn.utility.PermUtil
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.adapters.ImageAdapter
-import space.digitallab.noticeboard.data.Notice
-import space.digitallab.noticeboard.database.DbManager
 import space.digitallab.noticeboard.databinding.ActivityEditAdsBinding
 import space.digitallab.noticeboard.dialogs.DialogSpinnerHelper
 import space.digitallab.noticeboard.fragments.FragmentCloseInterface
 import space.digitallab.noticeboard.fragments.ImageListFragment
+import space.digitallab.noticeboard.model.DbManager
+import space.digitallab.noticeboard.model.Notice
 import space.digitallab.noticeboard.utils.CitySearchHelper
 import space.digitallab.noticeboard.utils.ImagePiker
 
@@ -27,7 +27,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     private val dialog = DialogSpinnerHelper()
     lateinit var imageAdapter : ImageAdapter
     var editImagePosition = 0
-    private val dbManager = DbManager(null)
+    private val dbManager = DbManager()
     var launcherMultiSelectImage: ActivityResultLauncher<Intent>? = null
     var launcherSingleSelectImage: ActivityResultLauncher<Intent>? = null
 

@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
@@ -19,23 +20,21 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import space.digitallab.noticeboard.act.EditAdsAct
 import space.digitallab.noticeboard.adapters.NoticeRcAdapter
-import space.digitallab.noticeboard.data.Notice
-import space.digitallab.noticeboard.database.DbManager
-import space.digitallab.noticeboard.database.ReadDataCallback
 import space.digitallab.noticeboard.databinding.ActivityMainBinding
 import space.digitallab.noticeboard.dialoghelper.DialogConst
 import space.digitallab.noticeboard.dialoghelper.DialogHelper
 import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
+import space.digitallab.noticeboard.viewModel.FirebaseViewModel
 
 
- class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, ReadDataCallback {
+ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
 
      private lateinit var tvAccount: TextView
      private lateinit var rootElement: ActivityMainBinding
      private val dialogHelper = DialogHelper(this)
      val mAuth = Firebase.auth
-     val dbManager =  DbManager(this)
      val adapter = NoticeRcAdapter(mAuth)
+     private val firebaseViewModel: FirebaseViewModel by viewModels()
 
      override fun onCreate(savedInstanceState: Bundle?) {
          super.onCreate(savedInstanceState)
@@ -44,7 +43,8 @@ import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
          setContentView(view)
          init()
          initRecyclerView()
-         dbManager.readDataFromDb()
+         observeVm()
+         firebaseViewModel.loadAllNotice()
      }
 
      override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -148,8 +148,11 @@ import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
              firebaseUser.email
          }
      }
+     private fun observeVm() {
 
-     override fun readData(list: List<Notice>) {
-         adapter.updateAdapter(list as ArrayList<Notice>)
+         firebaseViewModel.noticeData.observe(this, {dataList ->
+             adapter.updateAdapter(dataList)
+         })
      }
+
  }

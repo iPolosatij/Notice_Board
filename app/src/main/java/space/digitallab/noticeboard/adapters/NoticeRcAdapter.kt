@@ -5,8 +5,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.auth.FirebaseAuth
-import space.digitallab.noticeboard.data.Notice
 import space.digitallab.noticeboard.databinding.NoticeListItemBinding
+import space.digitallab.noticeboard.model.Notice
 
 class NoticeRcAdapter(val auth: FirebaseAuth): RecyclerView.Adapter<NoticeRcAdapter.NoticeHolder>() {
 

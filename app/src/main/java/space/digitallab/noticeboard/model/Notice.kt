@@ -1,4 +1,4 @@
-package space.digitallab.noticeboard.data
+package space.digitallab.noticeboard.model
 
 data class Notice(
     val country: String? = null,
