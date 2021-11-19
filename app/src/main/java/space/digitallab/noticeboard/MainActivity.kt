@@ -90,8 +90,8 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
 
      }
 
-     private fun bottomMenuOnClick() = with(rootElement.mainContent.bottonNavView) {
-         this.setOnNavigationItemSelectedListener { item ->
+     private fun bottomMenuOnClick() = with(rootElement.mainContent) {
+         this.bottonNavView.setOnNavigationItemSelectedListener { item ->
              when (item.itemId) {
                  R.id.newNotice -> {
                      val i = Intent(this@MainActivity, EditAdsAct::class.java)
@@ -99,15 +99,20 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
                  }
 
                  R.id.myNotice -> {
-                     Toast.makeText(this@MainActivity, "My notice", Toast.LENGTH_SHORT).show()
+
+                     firebaseViewModel.loadMyNotice()
+                     this.toolbar.title = getString(R.string.my_ads)
                  }
 
                  R.id.favoriteNotice -> {
-                     Toast.makeText(this@MainActivity, "Favorite notice", Toast.LENGTH_SHORT).show()
+
+                     this.toolbar.title = getString(R.string.my_favorite)
                  }
 
                  R.id.home -> {
-                     Toast.makeText(this@MainActivity, "Home", Toast.LENGTH_SHORT).show()
+
+                     firebaseViewModel.loadAllNotice()
+                     this.toolbar.title = getString(R.string.default_list)
                  }
              }
              true

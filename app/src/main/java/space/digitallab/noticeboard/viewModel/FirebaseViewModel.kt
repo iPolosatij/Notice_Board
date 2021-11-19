@@ -11,7 +11,15 @@ class FirebaseViewModel: ViewModel() {
     val noticeData = MutableLiveData<ArrayList<Notice>>()
 
     fun loadAllNotice(){
-        dbManager.readDataFromDb(object: DbManager.ReadDataCallback{
+        dbManager.getAllNotice(object: DbManager.ReadDataCallback{
+            override fun readData(list: ArrayList<Notice>) {
+                noticeData.value = list
+            }
+        })
+    }
+
+    fun loadMyNotice(){
+        dbManager.getMyNotice(object: DbManager.ReadDataCallback{
             override fun readData(list: ArrayList<Notice>) {
                 noticeData.value = list
             }

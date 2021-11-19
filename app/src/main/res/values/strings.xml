@@ -6,6 +6,8 @@
     <!-- menu drawer strings -->
     <string name="ads_cat1">Объявления</string>
     <string name="my_ads">Мои Объявления</string>
+    <string name="my_favorite">Избранное</string>
+    <string name="default_list">Лента категории</string>
     <string name="ads_car">Автомобили</string>
     <string name="ads_pc">Компьютеры</string>
     <string name="ads_smartphone">Смартфоны</string>
