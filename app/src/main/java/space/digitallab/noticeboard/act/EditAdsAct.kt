@@ -9,6 +9,7 @@ import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import com.fxn.utility.PermUtil
+import space.digitallab.noticeboard.MainActivity
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.adapters.ImageAdapter
 import space.digitallab.noticeboard.databinding.ActivityEditAdsBinding
@@ -36,6 +37,32 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         rootElement = ActivityEditAdsBinding.inflate(layoutInflater)
         setContentView(rootElement.root)
         init()
+        checkEditState()
+
+    }
+
+    private fun checkEditState(){
+        if (isEditState()){
+            fillViews(intent.getSerializableExtra(MainActivity.NOTICES_DATA) as Notice)
+        }
+    }
+
+    private fun isEditState(): Boolean{
+        return intent.getBooleanExtra(MainActivity.EDIT_STATE, false)
+    }
+
+    private fun fillViews(notice: Notice) = with(rootElement){
+        tvCountry.text = notice.country
+        tvCity.text = notice.city
+        tvTel.setText(notice.tel)
+        tvIndex.setText(notice.index)
+        withSend.isChecked = notice.withSend.toBoolean()
+        tvCategory.text = notice.category
+        tvNoticeTitle.setText(notice.title)
+        tvPrice.setText(notice.price)
+        tvDescription.setText(notice.description)
+
+
     }
 
     override fun onRequestPermissionsResult(

@@ -1,5 +1,7 @@
 package space.digitallab.noticeboard.model
 
+import java.io.Serializable
+
 data class Notice(
     val country: String? = null,
     val city: String? = null,
@@ -12,4 +14,4 @@ data class Notice(
     val description: String? = null,
     val key: String? = null,
     val uid: String? = null
-)
+): Serializable

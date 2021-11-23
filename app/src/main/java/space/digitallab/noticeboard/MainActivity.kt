@@ -32,7 +32,7 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
      private lateinit var rootElement: ActivityMainBinding
      private val dialogHelper = DialogHelper(this)
      val mAuth = Firebase.auth
-     val adapter = NoticeRcAdapter(mAuth)
+     val adapter = NoticeRcAdapter(this)
      private val firebaseViewModel: FirebaseViewModel by viewModels()
 
      override fun onCreate(savedInstanceState: Bundle?) {
@@ -174,5 +174,8 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
              adapter.updateAdapter(dataList)
          })
      }
-
+     companion object{
+         const val EDIT_STATE = "edit_state"
+         const val NOTICES_DATA = "notices_data"
+     }
  }
