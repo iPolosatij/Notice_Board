@@ -1,20 +1,22 @@
 package space.digitallab.noticeboard.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.google.firebase.auth.FirebaseAuth
+import space.digitallab.noticeboard.MainActivity
+import space.digitallab.noticeboard.act.EditAdsAct
 import space.digitallab.noticeboard.databinding.NoticeListItemBinding
 import space.digitallab.noticeboard.model.Notice
 
-class NoticeRcAdapter(val auth: FirebaseAuth): RecyclerView.Adapter<NoticeRcAdapter.NoticeHolder>() {
+class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapter.NoticeHolder>() {
 
     val noticeList = ArrayList<Notice>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoticeHolder {
         val binding = NoticeListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NoticeHolder(binding, auth)
+        return NoticeHolder(binding, act)
     }
 
     override fun onBindViewHolder(holder: NoticeHolder, position: Int) {
@@ -31,19 +33,28 @@ class NoticeRcAdapter(val auth: FirebaseAuth): RecyclerView.Adapter<NoticeRcAdap
         notifyDataSetChanged()
     }
 
-    class NoticeHolder(val binding: NoticeListItemBinding,val auth: FirebaseAuth) : RecyclerView.ViewHolder(binding.root) {
+    class NoticeHolder(val binding: NoticeListItemBinding,val act: MainActivity) : RecyclerView.ViewHolder(binding.root) {
 
-        fun setData(notice: Notice){
-            binding.apply {
-                tvTitle.text = notice.title
-                tvDiscription.text = notice.description
-                tvPrice.text = notice.price
-            }
+        fun setData(notice: Notice) = with(binding) {
+            tvTitle.text = notice.title
+            tvDiscription.text = notice.description
+            tvPrice.text = notice.price
             ownerPanelVisible(isOwner(notice))
+            ibEdit.setOnClickListener(onClickEdit(notice))
         }
 
+        private fun onClickEdit(notice: Notice): View.OnClickListener{
+            return View.OnClickListener {
+                val editIntent = Intent(act, EditAdsAct::class.java).apply {
+                    putExtra(MainActivity.EDIT_STATE, true)
+                    putExtra(MainActivity.NOTICES_DATA, notice)
+
+                }
+                act.startActivity(editIntent)
+            }
+        }
         private fun isOwner(notice: Notice): Boolean{
-            return notice.uid == auth.uid
+            return notice.uid == act.mAuth.uid
         }
 
         private fun ownerPanelVisible(isOwner: Boolean){
