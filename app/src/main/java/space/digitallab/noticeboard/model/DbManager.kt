@@ -12,8 +12,14 @@ class DbManager {
     val db = Firebase.database.getReference("Main")
     val auth = Firebase.auth
 
-    fun publishNotice(notice: Notice){
-       if(auth.uid != null) db.child(notice.key?:"empty").child(auth.uid!!).child("notice").setValue(notice)
+    fun publishNotice(notice: Notice, finishListener: FinishWorkListener){
+       if(auth.uid != null) db.child(notice.key?:"empty")
+           .child(auth.uid!!).child("notice")
+           .setValue(notice).addOnCompleteListener{
+               if(it.isSuccessful) {
+                   finishListener.loadNoticeFinish()
+               }
+           }
     }
 
     fun getMyNotice(readDataCallback: ReadDataCallback?){
@@ -46,5 +52,9 @@ class DbManager {
 
     interface ReadDataCallback {
         fun readData(list: ArrayList<Notice>)
+    }
+
+    interface FinishWorkListener{
+        fun loadNoticeFinish()
     }
 }

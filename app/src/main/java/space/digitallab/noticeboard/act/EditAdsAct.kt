@@ -27,10 +27,12 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     lateinit var rootElement: ActivityEditAdsBinding
     private val dialog = DialogSpinnerHelper()
     lateinit var imageAdapter : ImageAdapter
-    var editImagePosition = 0
     private val dbManager = DbManager()
     var launcherMultiSelectImage: ActivityResultLauncher<Intent>? = null
     var launcherSingleSelectImage: ActivityResultLauncher<Intent>? = null
+    var editImagePosition = 0
+    private var isEditState = false
+    private var editNotice: Notice? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,8 +44,10 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     private fun checkEditState(){
-        if (isEditState()){
-            fillViews(intent.getSerializableExtra(MainActivity.NOTICES_DATA) as Notice)
+        isEditState = isEditState()
+        if (isEditState){
+            editNotice = intent.getSerializableExtra(MainActivity.NOTICES_DATA) as Notice
+            editNotice?.let { fillViews(it)}
         }
     }
 
@@ -61,7 +65,6 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         tvNoticeTitle.setText(notice.title)
         tvPrice.setText(notice.price)
         tvDescription.setText(notice.description)
-
 
     }
 
@@ -131,7 +134,21 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickPublish(view: View){
-        dbManager.publishNotice(fillNotice())
+        val notice = fillNotice()
+        if (isEditState) {
+            dbManager.publishNotice(notice.copy(key = editNotice?.key), onPublishFinish())
+        }else {
+            dbManager.publishNotice(notice, onPublishFinish())
+        }
+
+    }
+
+    fun onPublishFinish(): DbManager.FinishWorkListener{
+        return object : DbManager.FinishWorkListener{
+            override fun loadNoticeFinish() {
+               finish()
+            }
+        }
     }
 
     private fun fillNotice(): Notice{
