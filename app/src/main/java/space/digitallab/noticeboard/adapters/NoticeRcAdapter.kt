@@ -4,6 +4,7 @@ import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import space.digitallab.noticeboard.MainActivity
 import space.digitallab.noticeboard.act.EditAdsAct
@@ -28,9 +29,10 @@ class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapt
     }
 
     fun updateAdapter(newList: ArrayList<Notice>){
+        val diffResult = DiffUtil.calculateDiff(DiffUtilHelper(noticeList, newList))
+        diffResult.dispatchUpdatesTo(this)
         noticeList.clear()
         noticeList.addAll(newList)
-        notifyDataSetChanged()
     }
 
     class NoticeHolder(val binding: NoticeListItemBinding,val act: MainActivity) : RecyclerView.ViewHolder(binding.root) {
@@ -41,6 +43,9 @@ class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapt
             tvPrice.text = notice.price
             ownerPanelVisible(isOwner(notice))
             ibEdit.setOnClickListener(onClickEdit(notice))
+            ibDelete.setOnClickListener {
+                act.onDeleteItem(notice)
+            }
         }
 
         private fun onClickEdit(notice: Notice): View.OnClickListener{
@@ -59,6 +64,12 @@ class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapt
 
         private fun ownerPanelVisible(isOwner: Boolean){
             if(isOwner) binding.ownerPanel.visibility = View.VISIBLE
+        }
+    }
+
+    interface DeleteItemListener{
+        fun onDeleteItem(notice: Notice){
+
         }
     }
 }

@@ -23,10 +23,11 @@ import space.digitallab.noticeboard.databinding.ActivityMainBinding
 import space.digitallab.noticeboard.dialoghelper.DialogConst
 import space.digitallab.noticeboard.dialoghelper.DialogHelper
 import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
+import space.digitallab.noticeboard.model.Notice
 import space.digitallab.noticeboard.viewModel.FirebaseViewModel
 
 
- class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener {
+ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NoticeRcAdapter.DeleteItemListener {
 
      private lateinit var tvAccount: TextView
      private lateinit var rootElement: ActivityMainBinding
@@ -168,14 +169,19 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
              firebaseUser.email
          }
      }
-     private fun observeVm() {
 
+     private fun observeVm() {
          firebaseViewModel.noticeData.observe(this, {dataList ->
              adapter.updateAdapter(dataList)
          })
      }
+
      companion object{
          const val EDIT_STATE = "edit_state"
          const val NOTICES_DATA = "notices_data"
+     }
+
+     override fun onDeleteItem(notice: Notice) {
+         firebaseViewModel.deleteItem(notice)
      }
  }

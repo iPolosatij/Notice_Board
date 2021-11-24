@@ -50,6 +50,16 @@ class DbManager {
         })
     }
 
+    fun deleteNotice(notice: Notice, listener: FinishWorkListener){
+        notice.key?.let {key->
+            notice.uid?.let { uid->
+                db.child(key).child(uid).removeValue().addOnCompleteListener {
+                    if(it.isSuccessful) listener.loadNoticeFinish()
+                }
+            }
+        }
+    }
+
     interface ReadDataCallback {
         fun readData(list: ArrayList<Notice>)
     }

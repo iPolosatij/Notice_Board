@@ -25,4 +25,15 @@ class FirebaseViewModel: ViewModel() {
             }
         })
     }
+
+    fun deleteItem(notice: Notice){
+        dbManager.deleteNotice(notice,object : DbManager.FinishWorkListener{
+            override fun loadNoticeFinish() {
+                val updatedList = noticeData.value
+                updatedList?.remove(notice)
+                noticeData.postValue(updatedList)
+
+            }
+        })
+    }
 }
