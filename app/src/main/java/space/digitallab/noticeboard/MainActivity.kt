@@ -27,7 +27,7 @@ import space.digitallab.noticeboard.model.Notice
 import space.digitallab.noticeboard.viewModel.FirebaseViewModel
 
 
- class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NoticeRcAdapter.DeleteItemListener {
+ class MainActivity : AppCompatActivity(), NavigationView.OnNavigationItemSelectedListener, NoticeRcAdapter.ActionListener {
 
      private lateinit var tvAccount: TextView
      private lateinit var rootElement: ActivityMainBinding
@@ -183,5 +183,9 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
 
      override fun onDeleteItem(notice: Notice) {
          firebaseViewModel.deleteItem(notice)
+     }
+
+     override fun onNoticeViewed(notice: Notice) {
+         firebaseViewModel.noticeViewed(notice)
      }
  }

@@ -9,17 +9,24 @@ import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class DbManager {
-    val db = Firebase.database.getReference("Main")
+    val db = Firebase.database.getReference(MAIN_NODE)
     val auth = Firebase.auth
 
     fun publishNotice(notice: Notice, finishListener: FinishWorkListener){
        if(auth.uid != null) db.child(notice.key?:"empty")
-           .child(auth.uid!!).child("notice")
+           .child(auth.uid!!).child(NOTICE_NODE)
            .setValue(notice).addOnCompleteListener{
                if(it.isSuccessful) {
                    finishListener.loadNoticeFinish()
                }
            }
+    }
+
+    fun noticeViewed(notice: Notice) {
+        var counter = notice.viewsCounter.toInt()
+        counter++
+        if (auth.uid != null) db.child(notice.key ?: "empty")
+            .child(INFO_NODE).setValue(ItemInfo(counter.toString(), notice.emailsCounter, notice.callsCounter))
     }
 
     fun getMyNotice(readDataCallback: ReadDataCallback?){
@@ -36,13 +43,19 @@ class DbManager {
             override fun onDataChange(snapshot: DataSnapshot) {
                 val noticeList = ArrayList<Notice>()
                 for(item in snapshot.children){
-                    val notice = item
-                        .children
-                        .iterator()
-                        .next()
-                        .child("notice")
-                        .getValue(Notice::class.java)
-                    notice?.let { noticeList.add(it) }
+                    var notice: Notice? = null
+                    item.children.forEach{snapShot ->
+                        if(notice == null) notice = snapShot.child(NOTICE_NODE).getValue(Notice::class.java)
+                    }
+                    val itemInfo = item.child(INFO_NODE).getValue(ItemInfo::class.java)
+                    notice?.apply {
+                       itemInfo?.let { info ->
+                           viewsCounter = info.viewsCounter.toString()
+                           emailsCounter = info.emailsCounter.toString()
+                           callsCounter = info.callsCounter.toString()
+                       }
+                    }
+                    notice?.let{ noticeList.add(it) }
                 }
                 readDataCallback?.readData(noticeList)
             }
@@ -66,5 +79,11 @@ class DbManager {
 
     interface FinishWorkListener{
         fun loadNoticeFinish()
+    }
+
+    companion object{
+       const val NOTICE_NODE = "notice"
+       const val MAIN_NODE = "main"
+       const val INFO_NODE = "info"
     }
 }

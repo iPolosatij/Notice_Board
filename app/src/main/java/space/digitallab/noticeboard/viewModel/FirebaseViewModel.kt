@@ -18,6 +18,10 @@ class FirebaseViewModel: ViewModel() {
         })
     }
 
+    fun noticeViewed(notice: Notice){
+        dbManager.noticeViewed(notice)
+    }
+
     fun loadMyNotice(){
         dbManager.getMyNotice(object: DbManager.ReadDataCallback{
             override fun readData(list: ArrayList<Notice>) {

@@ -41,7 +41,12 @@ class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapt
             tvTitle.text = notice.title
             tvDiscription.text = notice.description
             tvPrice.text = notice.price
+            tvViewCounter.text = notice.viewsCounter
+            tvFavorit.text = notice.emailsCounter
             ownerPanelVisible(isOwner(notice))
+            itemView.setOnClickListener {
+                act.onNoticeViewed(notice)
+            }
             ibEdit.setOnClickListener(onClickEdit(notice))
             ibDelete.setOnClickListener {
                 act.onDeleteItem(notice)
@@ -67,9 +72,8 @@ class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapt
         }
     }
 
-    interface DeleteItemListener{
-        fun onDeleteItem(notice: Notice){
-
-        }
+    interface ActionListener{
+        fun onDeleteItem(notice: Notice)
+        fun onNoticeViewed(notice: Notice)
     }
 }
