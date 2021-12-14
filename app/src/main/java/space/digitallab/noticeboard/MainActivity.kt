@@ -188,4 +188,8 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
      override fun onNoticeViewed(notice: Notice) {
          firebaseViewModel.noticeViewed(notice)
      }
+
+     override fun onFavoriteClick(notice: Notice) {
+         firebaseViewModel.favoriteClick(notice)
+     }
  }

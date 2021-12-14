@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import space.digitallab.noticeboard.MainActivity
+import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.act.EditAdsAct
 import space.digitallab.noticeboard.databinding.NoticeListItemBinding
 import space.digitallab.noticeboard.model.Notice
@@ -43,6 +44,14 @@ class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapt
             tvPrice.text = notice.price
             tvViewCounter.text = notice.viewsCounter
             tvFavorit.text = notice.emailsCounter
+            if (notice.isFavorite){
+                ibFavorit.setImageResource(R.drawable.ic_favorit_pressed)
+            }else{
+                ibFavorit.setImageResource(R.drawable.ic_favorit_no_pressed)
+            }
+            ibFavorit.setOnClickListener {
+                act.onFavoriteClick(notice)
+            }
             ownerPanelVisible(isOwner(notice))
             itemView.setOnClickListener {
                 act.onNoticeViewed(notice)
@@ -75,5 +84,6 @@ class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapt
     interface ActionListener{
         fun onDeleteItem(notice: Notice)
         fun onNoticeViewed(notice: Notice)
+        fun onFavoriteClick(notice: Notice)
     }
 }

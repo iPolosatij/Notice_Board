@@ -145,7 +145,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     fun onPublishFinish(): DbManager.FinishWorkListener{
         return object : DbManager.FinishWorkListener{
-            override fun loadNoticeFinish() {
+            override fun onFinish() {
                finish()
             }
         }

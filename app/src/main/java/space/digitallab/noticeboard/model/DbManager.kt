@@ -17,7 +17,7 @@ class DbManager {
            .child(auth.uid!!).child(NOTICE_NODE)
            .setValue(notice).addOnCompleteListener{
                if(it.isSuccessful) {
-                   finishListener.loadNoticeFinish()
+                   finishListener.onFinish()
                }
            }
     }
@@ -27,6 +27,43 @@ class DbManager {
         counter++
         if (auth.uid != null) db.child(notice.key ?: "empty")
             .child(INFO_NODE).setValue(ItemInfo(counter.toString(), notice.emailsCounter, notice.callsCounter))
+    }
+
+    fun clickFavorite(notice: Notice, finishWorkListener: FinishWorkListener){
+        if (notice.isFavorite) removeFavorite(notice, finishWorkListener)
+        else addFavorite(notice, finishWorkListener)
+    }
+
+    private fun addFavorite(notice: Notice, finishListener: FinishWorkListener){
+        notice.key?.let { key ->
+            auth.uid?.let { uid ->
+                db.child(key)
+                    .child(FAVORITE_NODE)
+                    .child(uid)
+                    .setValue(uid)
+                    .addOnCompleteListener {
+                    if (it.isSuccessful){
+                        finishListener.onFinish()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun removeFavorite(notice: Notice, finishListener: FinishWorkListener){
+        notice.key?.let { key ->
+            auth.uid?.let { uid ->
+                db.child(key)
+                    .child(FAVORITE_NODE)
+                    .child(uid)
+                    .removeValue()
+                    .addOnCompleteListener {
+                        if (it.isSuccessful){
+                            finishListener.onFinish()
+                        }
+                    }
+            }
+        }
     }
 
     fun getMyNotice(readDataCallback: ReadDataCallback?){
@@ -67,7 +104,7 @@ class DbManager {
         notice.key?.let {key->
             notice.uid?.let { uid->
                 db.child(key).child(uid).removeValue().addOnCompleteListener {
-                    if(it.isSuccessful) listener.loadNoticeFinish()
+                    if(it.isSuccessful) listener.onFinish()
                 }
             }
         }
@@ -78,12 +115,13 @@ class DbManager {
     }
 
     interface FinishWorkListener{
-        fun loadNoticeFinish()
+        fun onFinish()
     }
 
     companion object{
        const val NOTICE_NODE = "notice"
        const val MAIN_NODE = "main"
        const val INFO_NODE = "info"
+       const val FAVORITE_NODE = "favorite"
     }
 }

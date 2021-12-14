@@ -18,6 +18,21 @@ class FirebaseViewModel: ViewModel() {
         })
     }
 
+    fun favoriteClick(notice: Notice){
+        dbManager.clickFavorite(notice, object: DbManager.FinishWorkListener{
+            override fun onFinish() {
+                val updatedList = noticeData.value
+                val pos = updatedList?.indexOf(notice)
+                if (pos != -1){
+                    pos?.let {position ->
+                        updatedList[position] = updatedList[position].copy(isFavorite = !notice.isFavorite)
+                    }
+                }
+                noticeData.postValue(updatedList)
+            }
+        })
+    }
+
     fun noticeViewed(notice: Notice){
         dbManager.noticeViewed(notice)
     }
@@ -32,7 +47,7 @@ class FirebaseViewModel: ViewModel() {
 
     fun deleteItem(notice: Notice){
         dbManager.deleteNotice(notice,object : DbManager.FinishWorkListener{
-            override fun loadNoticeFinish() {
+            override fun onFinish() {
                 val updatedList = noticeData.value
                 updatedList?.remove(notice)
                 noticeData.postValue(updatedList)
