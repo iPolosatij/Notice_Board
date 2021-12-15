@@ -8,8 +8,8 @@ import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.accounthelper.AccountHelper
 import space.digitallab.noticeboard.databinding.SignDialogBinding
 
-class DialogHelper(act:MainActivity) {
-    private val act = act
+class DialogHelper(val act:MainActivity) {
+
     val accHelper = AccountHelper(act)
     private var isResetPasswordPressed = false
 

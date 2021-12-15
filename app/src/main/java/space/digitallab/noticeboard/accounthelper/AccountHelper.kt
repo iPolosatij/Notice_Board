@@ -82,14 +82,18 @@ class AccountHelper(act: MainActivity) {
         getSignInClient().signOut()
     }
 
-    fun signInFirebaseWithGoogle(token: String){
+    fun signInFirebaseWithGoogle(token: String) {
         val credential = GoogleAuthProvider.getCredential(token, null)
-        act.mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
-            if(task.isSuccessful){
-                Toast.makeText(act, "Sign in DONE", Toast.LENGTH_LONG).show()
-                act.uiUpdate(task.result?.user)
-            }else{
-                Log.d("MyLog", "Google sign in Exception - ${task.exception}")
+        act.mAuth.currentUser?.delete()?.addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                act.mAuth.signInWithCredential(credential).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Toast.makeText(act, "Sign in DONE", Toast.LENGTH_LONG).show()
+                        act.uiUpdate(task.result?.user)
+                    } else {
+                        Log.d("MyLog", "Google sign in Exception - ${task.exception}")
+                    }
+                }
             }
         }
     }
@@ -130,6 +134,21 @@ class AccountHelper(act: MainActivity) {
                 }
             }
         }
+    }
+
+    fun signInAnonymously(listener: Listener){
+        act.mAuth.signInAnonymously().addOnCompleteListener { task ->
+            if(task.isSuccessful){
+                Toast.makeText(act, "guest entry", Toast.LENGTH_LONG).show()
+                listener.onComplete()
+            }else{
+                Toast.makeText(act, "guest entry failed", Toast.LENGTH_LONG).show()
+            }
+        }
+    }
+
+    interface Listener{
+        fun onComplete()
     }
 }
 

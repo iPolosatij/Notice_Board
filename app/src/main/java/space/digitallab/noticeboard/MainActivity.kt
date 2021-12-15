@@ -18,6 +18,7 @@ import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import space.digitallab.noticeboard.accounthelper.AccountHelper
 import space.digitallab.noticeboard.act.EditAdsAct
 import space.digitallab.noticeboard.adapters.NoticeRcAdapter
 import space.digitallab.noticeboard.databinding.ActivityMainBinding
@@ -152,6 +153,10 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
             }
 
             R.id.logout -> {
+                if (mAuth.currentUser?.isAnonymous == true) {
+                    rootElement.driverLayout.closeDrawer(GravityCompat.START)
+                    return true
+                }
                 uiUpdate(null)
                 mAuth.signOut()
                 dialogHelper.accHelper.signOutGoogle()
@@ -163,11 +168,21 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
         return true
     }
 
-     fun uiUpdate(firebaseUser: FirebaseUser?){
-         tvAccount.text = if (firebaseUser == null){
-            resources.getString(R.string.not_reg)
-         }else{
-             firebaseUser.email
+     fun uiUpdate(firebaseUser: FirebaseUser?) {
+         when{
+             firebaseUser == null -> {
+                 dialogHelper.accHelper.signInAnonymously(object : AccountHelper.Listener {
+                     override fun onComplete() {
+                         tvAccount.text = getString(R.string.guest)
+                     }
+                 })
+             }
+             firebaseUser.isAnonymous -> {
+                 tvAccount.text = getString(R.string.guest)
+             }
+             !firebaseUser.isAnonymous -> {
+                 tvAccount.text = firebaseUser.email
+             }
          }
      }
 

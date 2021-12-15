@@ -51,7 +51,7 @@ class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapt
                 ibFavorit.setImageResource(R.drawable.ic_favorit_no_pressed)
             }
             ibFavorit.setOnClickListener {
-                act.onFavoriteClick(notice)
+                if(act.mAuth.currentUser?.isAnonymous == false) act.onFavoriteClick(notice)
             }
             ownerPanelVisible(isOwner(notice))
             itemView.setOnClickListener {

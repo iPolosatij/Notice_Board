@@ -26,6 +26,7 @@
     <string name="dialog_reset_email_message">Укажите Email для восстановления пароля</string>
     <string name="invalid_email">Email указан неверно</string>
     <string name="email_hint">Email</string>
+    <string name="guest">Гость</string>
     <string name="password_hint">Password</string>
     <string name="sign_up_action">Зарегистрироваться</string>
     <string name="sign_in_action">Войти</string>
