@@ -66,6 +66,11 @@ class DbManager {
         }
     }
 
+    fun getMyFavoriteNotice(readDataCallback: ReadDataCallback?){
+        val query = db.orderByChild("/favorite/${auth.uid}").equalTo(auth.uid)
+        readDataFromDb(query, readDataCallback)
+    }
+
     fun getMyNotice(readDataCallback: ReadDataCallback?){
         val query = db.orderByChild(auth.uid + "/notice/uid").equalTo(auth.uid)
         readDataFromDb(query, readDataCallback)

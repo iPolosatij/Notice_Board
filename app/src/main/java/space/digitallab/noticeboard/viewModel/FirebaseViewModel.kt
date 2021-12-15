@@ -54,6 +54,14 @@ class FirebaseViewModel: ViewModel() {
         })
     }
 
+    fun loadMyFavoriteNotice(){
+        dbManager.getMyFavoriteNotice(object: DbManager.ReadDataCallback{
+            override fun readData(list: ArrayList<Notice>) {
+                noticeData.value = list
+            }
+        })
+    }
+
     fun deleteItem(notice: Notice){
         dbManager.deleteNotice(notice,object : DbManager.FinishWorkListener{
             override fun onFinish() {

@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
+import android.view.View
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.viewModels
@@ -106,7 +107,7 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
                  }
 
                  R.id.favoriteNotice -> {
-
+                     firebaseViewModel.loadMyFavoriteNotice()
                      this.toolbar.title = getString(R.string.my_favorite)
                  }
 
@@ -171,8 +172,11 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
      }
 
      private fun observeVm() {
-         firebaseViewModel.noticeData.observe(this, {dataList ->
+         firebaseViewModel.noticeData.observe(this, { dataList ->
              adapter.updateAdapter(dataList)
+             rootElement.mainContent.isEmpty.visibility =
+                 if (dataList.isEmpty()) View.VISIBLE
+                 else View.GONE
          })
      }
 
