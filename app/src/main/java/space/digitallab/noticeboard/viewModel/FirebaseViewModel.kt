@@ -18,14 +18,23 @@ class FirebaseViewModel: ViewModel() {
         })
     }
 
-    fun favoriteClick(notice: Notice){
-        dbManager.clickFavorite(notice, object: DbManager.FinishWorkListener{
+    fun favoriteClick(notice: Notice) {
+        dbManager.clickFavorite(notice, object : DbManager.FinishWorkListener {
             override fun onFinish() {
                 val updatedList = noticeData.value
                 val pos = updatedList?.indexOf(notice)
-                if (pos != -1){
-                    pos?.let {position ->
-                        updatedList[position] = updatedList[position].copy(isFavorite = !notice.isFavorite)
+                if (pos != -1) {
+                    pos?.let { position ->
+
+                        val favCounter =
+                            if (notice.isFavorite) notice.favoriteCounter.toInt() - 1
+                            else notice.favoriteCounter.toInt() + 1
+
+                        updatedList[position] = updatedList[position]
+                            .copy(
+                                isFavorite = !notice.isFavorite,
+                                favoriteCounter = favCounter.toString()
+                            )
                     }
                 }
                 noticeData.postValue(updatedList)

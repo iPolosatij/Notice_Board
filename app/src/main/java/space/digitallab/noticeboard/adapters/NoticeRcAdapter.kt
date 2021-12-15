@@ -44,6 +44,7 @@ class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapt
             tvPrice.text = notice.price
             tvViewCounter.text = notice.viewsCounter
             tvFavorit.text = notice.emailsCounter
+            tvFavorit.text = notice.favoriteCounter
             if (notice.isFavorite){
                 ibFavorit.setImageResource(R.drawable.ic_favorit_pressed)
             }else{

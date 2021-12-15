@@ -84,9 +84,17 @@ class DbManager {
                     item.children.forEach{snapShot ->
                         if(notice == null) notice = snapShot.child(NOTICE_NODE).getValue(Notice::class.java)
                     }
+
                     val itemInfo = item.child(INFO_NODE).getValue(ItemInfo::class.java)
+                    val favCounter = item.child(FAVORITE_NODE).childrenCount
+                    val isMyFavorite = auth.uid?.let{uid ->
+                        item.child(FAVORITE_NODE).child(uid).getValue(String::class.java)
+                    }
+
                     notice?.apply {
                        itemInfo?.let { info ->
+                           isFavorite = isMyFavorite != null
+                           favoriteCounter = favCounter.toString()
                            viewsCounter = info.viewsCounter.toString()
                            emailsCounter = info.emailsCounter.toString()
                            callsCounter = info.callsCounter.toString()
