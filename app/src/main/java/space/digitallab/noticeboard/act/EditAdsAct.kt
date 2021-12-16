@@ -1,11 +1,10 @@
 package space.digitallab.noticeboard.act
 
-import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import space.digitallab.noticeboard.MainActivity
 import space.digitallab.noticeboard.R
@@ -26,8 +25,6 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     private val dialog = DialogSpinnerHelper()
     lateinit var imageAdapter : ImageAdapter
     private val dbManager = DbManager()
-    var launcherMultiSelectImage: ActivityResultLauncher<Intent>? = null
-    var launcherSingleSelectImage: ActivityResultLauncher<Intent>? = null
     var editImagePosition = 0
     private var isEditState = false
     private var editNotice: Notice? = null
@@ -70,8 +67,6 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         dialog.init(this)
         imageAdapter = ImageAdapter()
         rootElement.vpImages.adapter = imageAdapter
-        launcherMultiSelectImage = ImagePiker.getLauncherForMultiSelectGetImages(this)
-        launcherSingleSelectImage = ImagePiker.getLauncherForSingleImage(this)
     }
 
     //OnClicks
@@ -100,7 +95,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     fun onClickGetImages(view: View){
         if(imageAdapter.mainArray.size == 0){
-            ImagePiker.launcher(this, launcherMultiSelectImage, ImagePiker.MAX_IMAGE_COUNT)
+            ImagePiker.launcher(this, ImagePiker.MAX_IMAGE_COUNT)
         }else{
             openChooseImageFragment(null)
             chooseImageFragment?.updateAdapterFromEdit(imageAdapter.mainArray)
@@ -151,7 +146,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         chooseImageFragment = null
     }
 
-    fun openChooseImageFragment(newList : ArrayList<String>?){
+    fun openChooseImageFragment(newList : ArrayList<Uri>?){
 
         chooseImageFragment = ImageListFragment(this, newList)
         rootElement.scrollViewMine.visibility = View.GONE

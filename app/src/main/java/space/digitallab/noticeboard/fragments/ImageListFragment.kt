@@ -2,6 +2,7 @@ package space.digitallab.noticeboard.fragments
 
 import android.app.Activity
 import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -25,7 +26,7 @@ import space.digitallab.noticeboard.utils.ImageManager
 import space.digitallab.noticeboard.utils.ImagePiker
 import space.digitallab.noticeboard.utils.ItemTouchMoveCallback
 
-class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterface, private val newList : ArrayList<String>?) : BaseAdsFragment(), AdapterCallBack {
+class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterface, private val newList : ArrayList<Uri>?) : BaseAdsFragment(), AdapterCallBack {
 
     lateinit var binding : ListImageFragmentBinding
     val adapter = SelectImageRvAdapter(this)
@@ -73,10 +74,10 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
         activity?.supportFragmentManager?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
     }
 
-    private fun resizeSelectedImage(newList: ArrayList<String>, needClear: Boolean){
+    private fun resizeSelectedImage(newList: ArrayList<Uri>, needClear: Boolean){
         job = CoroutineScope(Dispatchers.Main).launch {
             val dialog = ProgressDialog.createProgressDialog(activity as Activity)
-            val bitmapList = ImageManager.imageResize(newList)
+            val bitmapList = ImageManager.imageResize(newList, activity as Activity)
             dialog.dismiss()
             adapter.updateAdapter(bitmapList, needClear)
             if(adapter.mainArray.size == ImagePiker.MAX_IMAGE_COUNT) addItem?.isVisible = false
@@ -101,19 +102,21 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
             }
             addItem?.setOnMenuItemClickListener {
                 val imageCount = ImagePiker.MAX_IMAGE_COUNT - adapter.mainArray.size
-               ImagePiker.launcher(activity as EditAdsAct, (activity as EditAdsAct).launcherMultiSelectImage, imageCount)
+               ImagePiker.launcher(activity as EditAdsAct, imageCount)
                 true
             }
         }
     }
 
-    fun updateAdapter(newList : ArrayList<String>){ resizeSelectedImage(newList, false) }
+    fun updateAdapter(newList : ArrayList<Uri>){
+        resizeSelectedImage(newList, false)
+    }
 
-    fun setSingleImage(uri : String, position : Int){
+    fun setSingleImage(uri : Uri, position : Int){
         val pBar = binding.rcViewSelectImage[position].findViewById<ProgressBar>(R.id.pBar)
         job = CoroutineScope(Dispatchers.Main).launch {
             pBar.visibility = View.VISIBLE
-            val bitmapList = ImageManager.imageResize(listOf(uri))
+            val bitmapList = ImageManager.imageResize(arrayListOf(uri), activity as Activity)
             pBar.visibility = View.GONE
             adapter.mainArray[position] = bitmapList[0]
             adapter.notifyItemChanged(position)
