@@ -1,18 +1,14 @@
 package space.digitallab.noticeboard.utils
 
 import android.content.Intent
-import android.graphics.Bitmap
-import android.view.View
 import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatActivity
-import com.fxn.pix.Options
-import com.fxn.pix.Pix
-import com.fxn.utility.PermUtil
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import io.ak1.pix.helpers.PixEventCallback
+import io.ak1.pix.helpers.addPixToActivity
+import io.ak1.pix.models.Mode
+import io.ak1.pix.models.Options
+import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.act.EditAdsAct
 
 
@@ -22,26 +18,36 @@ object ImagePiker {
     const val MAX_IMAGE_COUNT = 3
 
     fun getOptions(imageCounter: Int): Options {
-        return Options.init()
-            .setCount(imageCounter)
-            .setFrontfacing(false)
-            .setMode(Options.Mode.Picture)
-            .setScreenOrientation(Options.SCREEN_ORIENTATION_PORTRAIT)
-            .setPath("/pix/images")
+        return Options().apply {
+            count = imageCounter
+            isFrontFacing = false
+            mode = Mode.Picture
+            path = "/pix/images"
+        }
     }
 
     fun launcher(context: EditAdsAct, launcher: ActivityResultLauncher<Intent>?, imageCounter: Int){
-        PermUtil.checkForCamaraWritePermissions(context){
-            launcher?.launch(Intent(context, Pix::class.java).apply {
-                putExtra("options", getOptions(imageCounter))
-            })
+        context.addPixToActivity(R.id.place_holder, getOptions(imageCounter)){
+            when (it.status) {
+                PixEventCallback.Status.SUCCESS -> {
+                    context.supportFragmentManager.fragments.forEach{fragment ->
+                        if(fragment.isVisible) context
+                            .supportFragmentManager
+                            .beginTransaction()
+                            .remove(fragment)
+                            .commit()
+                    }
+
+                }
+                    //PixEventCallback.Status.BACK_PRESSED -> // back pressed called
+            }
         }
     }
 
     fun getLauncherForMultiSelectGetImages(context: EditAdsAct): ActivityResultLauncher<Intent> {
         return context.registerForActivityResult(ActivityResultContracts.StartActivityForResult()){
             result: ActivityResult ->
-            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+            /*if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 if(result.data != null) {
                     val returnValues = result.data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                     if(returnValues?.size!! > 1 && context.chooseImageFragment == null) {
@@ -56,20 +62,20 @@ object ImagePiker {
                        context.chooseImageFragment?.updateAdapter(returnValues)
                     }
                 }
-            }
+            }*/
         }
     }
 
     fun getLauncherForSingleImage(context: EditAdsAct ): ActivityResultLauncher<Intent> {
         return context.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) {
                 result: ActivityResult ->
-            if (result.resultCode == AppCompatActivity.RESULT_OK) {
+          /*  if (result.resultCode == AppCompatActivity.RESULT_OK) {
                 val uris = result.data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
                 context.chooseImageFragment?.setSingleImage(
                     uris?.get(0)!!,
                     context.editImagePosition
                 )
-            }
+            }*/
         }
     }
 }

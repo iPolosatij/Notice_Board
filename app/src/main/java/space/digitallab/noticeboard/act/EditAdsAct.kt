@@ -1,14 +1,12 @@
 package space.digitallab.noticeboard.act
 
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
-import com.fxn.utility.PermUtil
 import space.digitallab.noticeboard.MainActivity
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.adapters.ImageAdapter
@@ -66,30 +64,6 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         tvPrice.setText(notice.price)
         tvDescription.setText(notice.description)
 
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray
-    ) {
-        when (requestCode) {
-            PermUtil.REQUEST_CODE_ASK_MULTIPLE_PERMISSIONS -> {
-
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.isNotEmpty() && grantResults[0] === PackageManager.PERMISSION_GRANTED) {
-                   // ImagePiker.getImages(this, 3, ImagePiker.REQUEST_CODE_GET_IMAGES)
-                } else {
-                    Toast.makeText(
-                        this,
-                        "Approve permissions to open Pix ImagePicker",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-                return
-            }
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
     private fun init(){
