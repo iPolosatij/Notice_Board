@@ -1,12 +1,9 @@
 package space.digitallab.noticeboard.utils
 
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
-import androidx.activity.result.ActivityResult
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
+import androidx.fragment.app.Fragment
 import io.ak1.pix.helpers.PixEventCallback
 import io.ak1.pix.helpers.addPixToActivity
 import io.ak1.pix.models.Mode
@@ -19,8 +16,6 @@ import space.digitallab.noticeboard.act.EditAdsAct
 
 
 object ImagePiker {
-    const val REQUEST_CODE_GET_IMAGES = 999
-    const val REQUEST_CODE_GET_SINGLE_IMAGE = 998
     const val MAX_IMAGE_COUNT = 3
 
     fun getOptions(imageCounter: Int): Options {
@@ -32,21 +27,45 @@ object ImagePiker {
         }
     }
 
-    fun launcher(
-        context: EditAdsAct,
-        imageCounter: Int
-    ) {
-        context.addPixToActivity(R.id.place_holder, getOptions(imageCounter)) {result ->
+    fun getMultiImages(context: EditAdsAct, imageCounter: Int) {
+        context.addPixToActivity(R.id.place_holder, getOptions(imageCounter)) { result ->
             when (result.status) {
                 PixEventCallback.Status.SUCCESS -> {
-                    getMultiSelectGetImages(context,result.data)
-                    closePixFragment(context)
+                    getMultiSelectedImages(context, result.data)
                 }
-                //PixEventCallback.Status.BACK_PRESSED -> // back pressed called
             }
         }
     }
 
+    fun addImages(context: EditAdsAct, imageCounter: Int) {
+        val f = context.chooseImageFragment
+        context.addPixToActivity(R.id.place_holder, getOptions(imageCounter)) { result ->
+            when (result.status) {
+                PixEventCallback.Status.SUCCESS -> {
+                    context.chooseImageFragment = f
+                    f?.let { openChoseImageFragment(context, it) }
+                   context.chooseImageFragment?.updateAdapter(result.data as ArrayList<Uri>, context)
+                }
+            }
+        }
+    }
+
+    fun getSingleImage(context: EditAdsAct) {
+        val f = context.chooseImageFragment
+        context.addPixToActivity(R.id.place_holder, getOptions(1)) { result ->
+            when (result.status) {
+                PixEventCallback.Status.SUCCESS -> {
+                    context.chooseImageFragment =  f
+                    f?.let { openChoseImageFragment(context, it) }
+                    singleImage(context, result.data[0])
+                }
+            }
+        }
+    }
+
+    private  fun openChoseImageFragment(context: EditAdsAct, frag: Fragment){
+        context.supportFragmentManager.beginTransaction().replace(R.id.place_holder, frag).commit()
+    }
     private fun closePixFragment(context: EditAdsAct) {
         context.supportFragmentManager.fragments.forEach { fragment ->
             if (fragment.isVisible) context
@@ -57,32 +76,21 @@ object ImagePiker {
         }
     }
 
-        fun getMultiSelectGetImages(context: EditAdsAct, uris: List<Uri>) {
-            if (uris.size > 1 && context.chooseImageFragment == null) {
-                context.openChooseImageFragment(uris as ArrayList<Uri>)
-            } else if (uris.size == 1 && context.chooseImageFragment == null) {
-                CoroutineScope(Dispatchers.Main).launch {
-                    context.rootElement.pBarLoad.visibility = View.VISIBLE
-                    val bitmapArray = ImageManager.imageResize(uris, context) as ArrayList<Bitmap>
-                    context.rootElement.pBarLoad.visibility = View.GONE
-                    context.imageAdapter.update(bitmapArray)
-                }
-            } else if (context.chooseImageFragment != null) {
-                context.chooseImageFragment?.updateAdapter(uris as ArrayList<Uri>)
-            }
-
-
-        }
-
-        fun getLauncherForSingleImage(context: EditAdsAct): ActivityResultLauncher<Intent> {
-            return context.registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
-                /*  if (result.resultCode == AppCompatActivity.RESULT_OK) {
-                val uris = result.data?.getStringArrayListExtra(Pix.IMAGE_RESULTS)
-                context.chooseImageFragment?.setSingleImage(
-                    uris?.get(0)!!,
-                    context.editImagePosition
-                )
-            }*/
+    fun getMultiSelectedImages(context: EditAdsAct, uris: List<Uri>) {
+        if (uris.size > 1 && context.chooseImageFragment == null) {
+            context.openChooseImageFragment(uris as ArrayList<Uri>)
+        } else if (uris.size == 1 && context.chooseImageFragment == null) {
+            CoroutineScope(Dispatchers.Main).launch {
+                context.rootElement.pBarLoad.visibility = View.VISIBLE
+                val bitmapArray = ImageManager.imageResize(uris, context) as ArrayList<Bitmap>
+                context.rootElement.pBarLoad.visibility = View.GONE
+                context.imageAdapter.update(bitmapArray)
+                closePixFragment(context)
             }
         }
     }
+
+    private fun singleImage(context: EditAdsAct, uri: Uri) {
+        context.chooseImageFragment?.setSingleImage(uri, context.editImagePosition)
+    }
+}

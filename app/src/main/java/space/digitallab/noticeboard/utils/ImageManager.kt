@@ -8,8 +8,6 @@ import android.widget.ImageView
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.io.File
-import java.io.InputStream
 
 object ImageManager {
 
@@ -19,36 +17,11 @@ object ImageManager {
 
     fun getImageSize(uri : Uri, act: Activity) : List<Int>{
         val inStream = act.contentResolver.openInputStream(uri)
-        val fTemp = File(act.cacheDir, "temp.tmp")
-        inStream?.let { stream ->
-            fTemp.copyInStreamToFile(stream) }
         val options = BitmapFactory.Options().apply {
             inJustDecodeBounds = true
         }
-        BitmapFactory.decodeFile(fTemp.path, options)
-
-        return if(imageRotation(fTemp) == 90)
-            listOf(options.outHeight, options.outWidth)
-        else
-            listOf(options.outWidth, options.outHeight)
-    }
-
-    private fun File.copyInStreamToFile(inStream: InputStream){
-        this.outputStream().use { out ->
-            inStream.copyTo(out)
-        }
-    }
-
-    private fun imageRotation(imageFile: File): Int {
-        val rotation : Int
-        val exif = androidx.exifinterface.media.ExifInterface(imageFile.absolutePath)
-        val orientation = exif.getAttributeInt(androidx.exifinterface.media.ExifInterface.TAG_ORIENTATION, androidx.exifinterface.media.ExifInterface.ORIENTATION_NORMAL)
-        rotation = if(orientation == androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_90 || orientation == androidx.exifinterface.media.ExifInterface.ORIENTATION_ROTATE_270){
-            90
-        }else {
-            0
-        }
-        return  rotation
+        BitmapFactory.decodeStream(inStream, null, options)
+        return listOf(options.outWidth, options.outHeight)
     }
 
     fun chooseScaleType(im : ImageView, bitmap: Bitmap){

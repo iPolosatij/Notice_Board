@@ -26,7 +26,7 @@ import space.digitallab.noticeboard.utils.ImageManager
 import space.digitallab.noticeboard.utils.ImagePiker
 import space.digitallab.noticeboard.utils.ItemTouchMoveCallback
 
-class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterface, private val newList : ArrayList<Uri>?) : BaseAdsFragment(), AdapterCallBack {
+class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterface) : BaseAdsFragment(), AdapterCallBack {
 
     lateinit var binding : ListImageFragmentBinding
     val adapter = SelectImageRvAdapter(this)
@@ -49,7 +49,6 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
             touchHelper.attachToRecyclerView(rcViewSelectImage)
             rcViewSelectImage.layoutManager = LinearLayoutManager(activity)
             rcViewSelectImage.adapter = adapter
-            if(newList != null) resizeSelectedImage(newList, true)
         }
 
 
@@ -74,10 +73,10 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
         activity?.supportFragmentManager?.beginTransaction()?.remove(this@ImageListFragment)?.commit()
     }
 
-    private fun resizeSelectedImage(newList: ArrayList<Uri>, needClear: Boolean){
+    fun resizeSelectedImage(newList: ArrayList<Uri>, needClear: Boolean, act: Activity){
         job = CoroutineScope(Dispatchers.Main).launch {
-            val dialog = ProgressDialog.createProgressDialog(activity as Activity)
-            val bitmapList = ImageManager.imageResize(newList, activity as Activity)
+            val dialog = ProgressDialog.createProgressDialog(act)
+            val bitmapList = ImageManager.imageResize(newList, act)
             dialog.dismiss()
             adapter.updateAdapter(bitmapList, needClear)
             if(adapter.mainArray.size == ImagePiker.MAX_IMAGE_COUNT) addItem?.isVisible = false
@@ -91,6 +90,7 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
             tb.inflateMenu(R.menu.menu_choose_image)
             val deleteItem = tb.menu.findItem(R.id.delete_image)
             addItem = tb.menu.findItem(R.id.add_image)
+            if(adapter.mainArray.size == ImagePiker.MAX_IMAGE_COUNT) addItem?.isVisible = false
 
             tb.setNavigationOnClickListener {
                 showInterAd()
@@ -102,14 +102,14 @@ class ImageListFragment(private val fragmentCloseInterface : FragmentCloseInterf
             }
             addItem?.setOnMenuItemClickListener {
                 val imageCount = ImagePiker.MAX_IMAGE_COUNT - adapter.mainArray.size
-               ImagePiker.launcher(activity as EditAdsAct, imageCount)
+               ImagePiker.addImages(activity as EditAdsAct, imageCount)
                 true
             }
         }
     }
 
-    fun updateAdapter(newList : ArrayList<Uri>){
-        resizeSelectedImage(newList, false)
+    fun updateAdapter(newList : ArrayList<Uri>, act: Activity){
+        resizeSelectedImage(newList, false, act)
     }
 
     fun setSingleImage(uri : Uri, position : Int){

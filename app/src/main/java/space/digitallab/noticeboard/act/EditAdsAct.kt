@@ -95,7 +95,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
 
     fun onClickGetImages(view: View){
         if(imageAdapter.mainArray.size == 0){
-            ImagePiker.launcher(this, ImagePiker.MAX_IMAGE_COUNT)
+            ImagePiker.getMultiImages(this, ImagePiker.MAX_IMAGE_COUNT)
         }else{
             openChooseImageFragment(null)
             chooseImageFragment?.updateAdapterFromEdit(imageAdapter.mainArray)
@@ -147,8 +147,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun openChooseImageFragment(newList : ArrayList<Uri>?){
-
-        chooseImageFragment = ImageListFragment(this, newList)
+        chooseImageFragment = ImageListFragment(this)
+        newList?.let { chooseImageFragment?.resizeSelectedImage(it, true, this) }
         rootElement.scrollViewMine.visibility = View.GONE
         val fm = supportFragmentManager.beginTransaction()
         fm.replace(R.id.place_holder, chooseImageFragment!!)
