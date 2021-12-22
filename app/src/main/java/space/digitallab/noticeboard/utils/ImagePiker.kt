@@ -3,7 +3,6 @@ package space.digitallab.noticeboard.utils
 import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
-import androidx.fragment.app.Fragment
 import io.ak1.pix.helpers.PixEventCallback
 import io.ak1.pix.helpers.addPixToActivity
 import io.ak1.pix.models.Mode
@@ -38,13 +37,12 @@ object ImagePiker {
     }
 
     fun addImages(context: EditAdsAct, imageCounter: Int) {
-        val f = context.chooseImageFragment
+
         context.addPixToActivity(R.id.place_holder, getOptions(imageCounter)) { result ->
             when (result.status) {
                 PixEventCallback.Status.SUCCESS -> {
-                    context.chooseImageFragment = f
-                    f?.let { openChoseImageFragment(context, it) }
-                   context.chooseImageFragment?.updateAdapter(result.data as ArrayList<Uri>, context)
+                    openChoseImageFragment(context)
+                    context.chooseImageFragment?.updateAdapter(result.data as ArrayList<Uri>, context)
                 }
             }
         }
@@ -56,15 +54,17 @@ object ImagePiker {
             when (result.status) {
                 PixEventCallback.Status.SUCCESS -> {
                     context.chooseImageFragment =  f
-                    f?.let { openChoseImageFragment(context, it) }
+                    openChoseImageFragment(context)
                     singleImage(context, result.data[0])
                 }
             }
         }
     }
 
-    private  fun openChoseImageFragment(context: EditAdsAct, frag: Fragment){
-        context.supportFragmentManager.beginTransaction().replace(R.id.place_holder, frag).commit()
+    private  fun openChoseImageFragment(context: EditAdsAct){
+        context.chooseImageFragment?.let {
+            context.supportFragmentManager.beginTransaction().replace(R.id.place_holder, it).commit()
+        }
     }
     private fun closePixFragment(context: EditAdsAct) {
         context.supportFragmentManager.fragments.forEach { fragment ->
