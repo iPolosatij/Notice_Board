@@ -15,23 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "543814615381-anq79m2oin5iprhlkk54j82rkqrbvp1n.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "space.digitallab.noticeboard",
-            "certificate_hash": "ec919ac941fe32856a10f8fc6fe5ae1805e1e5a9"
-          }
-        },
-        {
-          "client_id": "543814615381-fco7486hgr801mvsoc44o7mhmgvrhp4h.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "space.digitallab.noticeboard",
-            "certificate_hash": "27a869b67ec06c08fc5c83751ff7b1396ebffff8"
-          }
-        },
-        {
-          "client_id": "543814615381-j2nae7uanp7hu9pp22vabpp58d6cspcf.apps.googleusercontent.com",
+          "client_id": "543814615381-ti4bcdaa4alg4f892vcpdfrp1dnbobk4.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "space.digitallab.noticeboard",

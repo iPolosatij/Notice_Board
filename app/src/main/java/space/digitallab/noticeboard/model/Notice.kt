@@ -12,6 +12,7 @@ data class Notice(
     val category: String? = null,
     val price: String? = null,
     val description: String? = null,
+    var imageUri: String? = "Empty",
     val key: String? = null,
     val uid: String? = null,
     var isFavorite: Boolean = false,
