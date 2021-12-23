@@ -28,8 +28,9 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     lateinit var imageAdapter : ImageAdapter
     private val dbManager = DbManager()
     var editImagePosition = 0
+    private var imageIndex = 0
     private var isEditState = false
-    private var editNotice: Notice? = null
+    private var notice: Notice? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,8 +44,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     private fun checkEditState(){
         isEditState = isEditState()
         if (isEditState){
-            editNotice = intent.getSerializableExtra(MainActivity.NOTICES_DATA) as Notice
-            editNotice?.let { fillViews(it)}
+            notice = intent.getSerializableExtra(MainActivity.NOTICES_DATA) as Notice
+            notice?.let { fillViews(it)}
         }
     }
 
@@ -105,11 +106,11 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
     }
 
     fun onClickPublish(view: View){
-        val notice = fillNotice()
+        notice = fillNotice()
         if (isEditState) {
-            dbManager.publishNotice(notice.copy(key = editNotice?.key), onPublishFinish())
+            notice?.copy(key = this.notice?.key)?.let { dbManager.publishNotice(it, onPublishFinish()) }
         }else {
-            upLoadAllImages(notice)
+            upLoadAllImages()
         }
 
     }
@@ -136,6 +137,8 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
                 tvPrice.text.toString(),
                 tvDescription.text.toString(),
                 "Empty",
+                "Empty",
+                "Empty",
                 dbManager.db.push().key,
                 dbManager.auth.uid
             )
@@ -158,9 +161,28 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         fm.commit()
     }
 
-    private fun upLoadAllImages(notice: Notice){
-        upLoadImage(prepareImageToArray(imageAdapter.mainArray[0])){uri->
-            dbManager.publishNotice(notice.copy(imageUri = uri.result.toString()), onPublishFinish())
+    private fun upLoadAllImages(){
+        if (imageAdapter.mainArray.size == imageIndex) {
+            notice?.let { dbManager.publishNotice(it, onPublishFinish()) }
+            return
+        }
+        upLoadImage(prepareImageToArray(imageAdapter.mainArray[imageIndex])){uri->
+            //notice?.let { dbManager.publishNotice(it, onPublishFinish()) }
+            nextImage(uri.result.toString())
+        }
+    }
+
+    private fun nextImage(uri: String){
+        setImageUriToNotice(uri)
+        imageIndex++
+        upLoadAllImages()
+    }
+
+    private fun setImageUriToNotice(uri: String){
+        when(imageIndex){
+            0 -> notice = notice?.copy(mainImageUri = uri)
+            1 -> notice = notice?.copy(secondImageUri = uri)
+            2 -> notice = notice?.copy(thirdImageUri = uri)
         }
     }
 

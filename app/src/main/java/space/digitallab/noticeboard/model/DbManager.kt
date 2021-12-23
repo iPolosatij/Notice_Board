@@ -99,9 +99,9 @@ class DbManager {
                     }
 
                     notice?.apply {
+                        isFavorite = isMyFavorite != null
+                        favoriteCounter = favCounter.toString()
                        itemInfo?.let { info ->
-                           isFavorite = isMyFavorite != null
-                           favoriteCounter = favCounter.toString()
                            viewsCounter = info.viewsCounter.toString()
                            emailsCounter = info.emailsCounter.toString()
                            callsCounter = info.callsCounter.toString()

@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import space.digitallab.noticeboard.MainActivity
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.act.EditAdsAct
@@ -43,23 +44,32 @@ class NoticeRcAdapter(val act: MainActivity): RecyclerView.Adapter<NoticeRcAdapt
             tvDiscription.text = notice.description
             tvPrice.text = notice.price
             tvViewCounter.text = notice.viewsCounter
-            tvFavorit.text = notice.emailsCounter
             tvFavorit.text = notice.favoriteCounter
-            if (notice.isFavorite){
-                ibFavorit.setImageResource(R.drawable.ic_favorit_pressed)
-            }else{
-                ibFavorit.setImageResource(R.drawable.ic_favorit_no_pressed)
-            }
+
+            Picasso.get().load(notice.mainImageUri).into(mineImage)
+            isFavorite(notice)
+            ownerPanelVisible(isOwner(notice))
+           mainOnClick(notice)
+        }
+
+        private fun mainOnClick(notice: Notice)= with(binding){
             ibFavorit.setOnClickListener {
                 if(act.mAuth.currentUser?.isAnonymous == false) act.onFavoriteClick(notice)
             }
-            ownerPanelVisible(isOwner(notice))
             itemView.setOnClickListener {
                 act.onNoticeViewed(notice)
             }
             ibEdit.setOnClickListener(onClickEdit(notice))
             ibDelete.setOnClickListener {
                 act.onDeleteItem(notice)
+            }
+        }
+
+        private fun isFavorite(notice: Notice)= with(binding){
+            if (notice.isFavorite){
+                ibFavorit.setImageResource(R.drawable.ic_favorit_pressed)
+            }else{
+                ibFavorit.setImageResource(R.drawable.ic_favorit_no_pressed)
             }
         }
 
