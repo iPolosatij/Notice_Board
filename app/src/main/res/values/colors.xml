@@ -4,6 +4,7 @@
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
     <color name="teal_200">#FF03DAC5</color>
+    <color name="blue_fon">#B7E1F4</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
@@ -11,6 +12,7 @@
     <color name="color_red">#F61515</color>
     <color name="blue_main">#48B5A5</color>
     <color name="lite_gray">#DADDDD</color>
+    <color name="text_separation">#F6EFB2</color>
     <color name="dark_gray">#858787</color>
 
 </resources>
