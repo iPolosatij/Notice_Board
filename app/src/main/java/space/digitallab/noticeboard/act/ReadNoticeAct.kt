@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.adapters.ImageAdapter
 import space.digitallab.noticeboard.constants.CallConstants
 import space.digitallab.noticeboard.databinding.ActivityReadNoticeBinding
@@ -31,7 +32,27 @@ class ReadNoticeAct : AppCompatActivity() {
 
     private fun getIntentForAction(){
         val notice = intent.getSerializableExtra(CallConstants.NOTICE) as Notice
+        updateUI(notice)
+    }
+
+    private fun updateUI(notice: Notice){
         fillImageArray(notice)
+        fillTextViews(notice)
+    }
+
+    private fun fillTextViews(notice: Notice) = with(binding){
+        title.text = notice.title
+        description.text = notice.description
+        price.text = notice.price
+        country.text = notice.country
+        city.text = notice.city
+        withSent.text = isWithSent(notice.withSend.toBoolean())
+        tel.text = notice.tel
+    }
+
+    private fun isWithSent(withSent: Boolean): String{
+        return if(withSent) getString(R.string.withSent)
+        else getString(R.string.withOutSent)
     }
 
     private fun fillImageArray(notice: Notice){

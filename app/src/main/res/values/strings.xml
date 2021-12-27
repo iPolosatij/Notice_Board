@@ -68,4 +68,6 @@
     <string name="cityTitle">Город:</string>
     <string name="withSentTitle">Возможна отправка:</string>
     <string name="telTitle">Телефон:</string>
+    <string name="withSent">Возможна отправка</string>
+    <string name="withOutSent">Отправка не возможна</string>
 </resources>
