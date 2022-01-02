@@ -63,6 +63,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         tvNoticeTitle.setText(notice.title)
         tvPrice.setText(notice.price)
         tvDescription.setText(notice.description)
+        tvEmail.setText(notice.email)
 
     }
 
@@ -136,6 +137,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
                 tvCategory.text.toString(),
                 tvPrice.text.toString(),
                 tvDescription.text.toString(),
+                tvEmail.text.toString(),
                 "Empty",
                 "Empty",
                 "Empty",

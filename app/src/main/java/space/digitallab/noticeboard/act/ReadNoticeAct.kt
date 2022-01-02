@@ -1,8 +1,11 @@
 package space.digitallab.noticeboard.act
 
+import android.content.ActivityNotFoundException
+import android.content.Intent
 import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,11 +19,14 @@ import space.digitallab.noticeboard.utils.ImageManager
 class ReadNoticeAct : AppCompatActivity() {
     lateinit var binding: ActivityReadNoticeBinding
     lateinit var adapter: ImageAdapter
+    private var notice: Notice? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityReadNoticeBinding.inflate(layoutInflater)
         setContentView(binding.root)
         init()
+        binding.call.setOnClickListener { call() }
+        binding.mail.setOnClickListener { writeEmail() }
     }
     private fun init(){
         adapter = ImageAdapter()
@@ -31,8 +37,8 @@ class ReadNoticeAct : AppCompatActivity() {
     }
 
     private fun getIntentForAction(){
-        val notice = intent.getSerializableExtra(CallConstants.NOTICE) as Notice
-        updateUI(notice)
+        notice = intent.getSerializableExtra(CallConstants.NOTICE) as Notice
+        notice?.let {updateUI(it)}
     }
 
     private fun updateUI(notice: Notice){
@@ -60,6 +66,28 @@ class ReadNoticeAct : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             val bitmapList = ImageManager.getBitmapsFromUris(listUris)
             adapter.update(bitmapList as ArrayList<Bitmap>)
+        }
+    }
+
+    private fun call(){
+        val callUri = "tel:${notice?.tel}"
+        val iCall = Intent(Intent.ACTION_DIAL)
+        iCall.data = callUri.toUri()
+        startActivity(iCall)
+    }
+
+    private fun writeEmail(){
+        val iWriteEmail = Intent(Intent.ACTION_SEND)
+        iWriteEmail.type = "message/rfc822"
+        iWriteEmail.apply {
+            putExtra(Intent.EXTRA_EMAIL, arrayOf(notice?.email))
+            putExtra(Intent.EXTRA_SUBJECT, "Сообщение по обьявлению ${notice?.title}")
+            putExtra(Intent.EXTRA_TEXT, "Меня заинтересовало ваше обьявление" )
+        }
+        try {
+          startActivity(Intent.createChooser(iWriteEmail, "Open with"))
+        }catch (e: ActivityNotFoundException){
+
         }
     }
 }

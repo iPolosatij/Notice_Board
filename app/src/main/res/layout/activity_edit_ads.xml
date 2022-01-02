@@ -177,6 +177,36 @@
                         android:orientation="horizontal"></LinearLayout>
 
                     <TextView
+                        android:id="@+id/tvTitleEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="10dp"
+                        android:layout_marginTop="10dp"
+                        android:text="@string/email"
+                        android:textColor="@color/blue_main"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/tvEmail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:ems="10"
+                        android:hint="@string/mail_hint"
+                        android:inputType="textEmailAddress"
+                        android:padding="10dp"
+                        android:textColorHint="@color/dark_gray" />
+
+                    <LinearLayout
+                        android:id="@+id/deliver4"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        android:background="@color/blue_main"
+                        android:orientation="horizontal"></LinearLayout>
+
+                    <TextView
                         android:id="@+id/tvTitleIndex"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -198,7 +228,7 @@
                         android:textColorHint="@color/dark_gray" />
 
                     <LinearLayout
-                        android:id="@+id/deliver4"
+                        android:id="@+id/deliver5"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_marginLeft="10dp"

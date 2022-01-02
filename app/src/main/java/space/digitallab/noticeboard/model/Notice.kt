@@ -12,6 +12,7 @@ data class Notice(
     val category: String? = null,
     val price: String? = null,
     val description: String? = null,
+    val email: String? = null,
     var mainImageUri: String? = "Empty",
     var secondImageUri: String? = "Empty",
     var thirdImageUri: String? = "Empty",
