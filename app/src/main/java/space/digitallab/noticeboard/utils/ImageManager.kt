@@ -6,8 +6,12 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.widget.ImageView
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import space.digitallab.noticeboard.adapters.ImageAdapter
+import space.digitallab.noticeboard.model.Notice
 
 object ImageManager {
 
@@ -69,7 +73,7 @@ object ImageManager {
         return@withContext bitmapList
     }
 
-    suspend fun getBitmapsFromUris(uris : List<String?>): List<Bitmap> = withContext(Dispatchers.IO){
+    private suspend fun getBitmapsFromUris(uris : List<String?>): List<Bitmap> = withContext(Dispatchers.IO){
 
         val bitmapList = ArrayList<Bitmap>()
         for(i in uris.indices){
@@ -77,7 +81,14 @@ object ImageManager {
                 bitmapList.add(Picasso.get().load(uris[i]).get())
             }
         }
-
         return@withContext bitmapList
+    }
+
+    fun fillImageArray(notice: Notice, adapter: ImageAdapter){
+        val listUris = listOf(notice.mainImageUri, notice.secondImageUri, notice.thirdImageUri)
+        CoroutineScope(Dispatchers.Main).launch {
+            val bitmapList = getBitmapsFromUris(listUris)
+            adapter.update(bitmapList as ArrayList<Bitmap>)
+        }
     }
 }

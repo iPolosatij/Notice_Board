@@ -17,6 +17,7 @@ import space.digitallab.noticeboard.fragments.ImageListFragment
 import space.digitallab.noticeboard.model.DbManager
 import space.digitallab.noticeboard.model.Notice
 import space.digitallab.noticeboard.utils.CitySearchHelper
+import space.digitallab.noticeboard.utils.ImageManager
 import space.digitallab.noticeboard.utils.ImagePiker
 import java.io.ByteArrayOutputStream
 
@@ -64,7 +65,7 @@ class EditAdsAct : AppCompatActivity(), FragmentCloseInterface {
         tvPrice.setText(notice.price)
         tvDescription.setText(notice.description)
         tvEmail.setText(notice.email)
-
+        ImageManager.fillImageArray(notice, imageAdapter)
     }
 
     private fun init(){

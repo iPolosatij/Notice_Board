@@ -20,7 +20,9 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import space.digitallab.noticeboard.accounthelper.AccountHelper
 import space.digitallab.noticeboard.act.EditAdsAct
+import space.digitallab.noticeboard.act.ReadNoticeAct
 import space.digitallab.noticeboard.adapters.NoticeRcAdapter
+import space.digitallab.noticeboard.constants.CallConstants
 import space.digitallab.noticeboard.databinding.ActivityMainBinding
 import space.digitallab.noticeboard.dialoghelper.DialogConst
 import space.digitallab.noticeboard.dialoghelper.DialogHelper
@@ -206,6 +208,9 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
 
      override fun onNoticeViewed(notice: Notice) {
          firebaseViewModel.noticeViewed(notice)
+         val intent = Intent(this, ReadNoticeAct::class.java)
+         intent.putExtra(CallConstants.NOTICE, notice)
+         startActivity(intent)
      }
 
      override fun onFavoriteClick(notice: Notice) {

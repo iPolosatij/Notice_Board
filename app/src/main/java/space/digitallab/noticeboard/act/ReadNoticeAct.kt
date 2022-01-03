@@ -2,13 +2,10 @@ package space.digitallab.noticeboard.act
 
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.graphics.Bitmap
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.net.toUri
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import androidx.viewpager2.widget.ViewPager2
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.adapters.ImageAdapter
 import space.digitallab.noticeboard.constants.CallConstants
@@ -34,6 +31,7 @@ class ReadNoticeAct : AppCompatActivity() {
             vpNoticeImage.adapter = adapter
         }
         getIntentForAction()
+        imageChangeCounter()
     }
 
     private fun getIntentForAction(){
@@ -42,7 +40,7 @@ class ReadNoticeAct : AppCompatActivity() {
     }
 
     private fun updateUI(notice: Notice){
-        fillImageArray(notice)
+        ImageManager.fillImageArray(notice, adapter)
         fillTextViews(notice)
     }
 
@@ -59,14 +57,6 @@ class ReadNoticeAct : AppCompatActivity() {
     private fun isWithSent(withSent: Boolean): String{
         return if(withSent) getString(R.string.withSent)
         else getString(R.string.withOutSent)
-    }
-
-    private fun fillImageArray(notice: Notice){
-        val listUris = listOf(notice.mainImageUri, notice.secondImageUri, notice.thirdImageUri)
-        CoroutineScope(Dispatchers.Main).launch {
-            val bitmapList = ImageManager.getBitmapsFromUris(listUris)
-            adapter.update(bitmapList as ArrayList<Bitmap>)
-        }
     }
 
     private fun call(){
@@ -89,5 +79,15 @@ class ReadNoticeAct : AppCompatActivity() {
         }catch (e: ActivityNotFoundException){
 
         }
+    }
+
+    private fun imageChangeCounter(){
+        binding.vpNoticeImage.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                val imageCounter = "${position+1}/${binding.vpNoticeImage.adapter?.itemCount}"
+                binding.imageCounter.text = imageCounter
+            }
+        })
     }
 }
