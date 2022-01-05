@@ -81,9 +81,9 @@ object ImagePiker {
             context.openChooseImageFragment(uris as ArrayList<Uri>)
         } else if (uris.size == 1 && context.chooseImageFragment == null) {
             CoroutineScope(Dispatchers.Main).launch {
-                context.rootElement.pBarLoad.visibility = View.VISIBLE
+                context.binding.pBarLoad.visibility = View.VISIBLE
                 val bitmapArray = ImageManager.imageResize(uris, context) as ArrayList<Bitmap>
-                context.rootElement.pBarLoad.visibility = View.GONE
+                context.binding.pBarLoad.visibility = View.GONE
                 context.imageAdapter.update(bitmapArray)
                 closePixFragment(context)
             }

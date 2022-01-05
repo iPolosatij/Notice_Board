@@ -63,6 +63,17 @@
                         app:layout_constraintTop_toTopOf="@+id/vpImages"
                         app:srcCompat="@drawable/ic_edit" />
 
+                    <TextView
+                        android:id="@+id/imageCounter"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:background="@color/blue_main"
+                        android:gravity="center"
+                        android:padding="5dp"
+                        android:textColor="@color/white"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
                     <ProgressBar
                         android:id="@+id/pBarLoad"
                         style="?android:attr/progressBarStyle"
