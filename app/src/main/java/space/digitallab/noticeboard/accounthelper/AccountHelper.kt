@@ -9,7 +9,6 @@ import com.google.firebase.auth.*
 import space.digitallab.noticeboard.MainActivity
 import space.digitallab.noticeboard.R
 import space.digitallab.noticeboard.constants.FirebaseAuthConstants
-import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
 
 class AccountHelper(act: MainActivity) {
 
@@ -83,7 +82,7 @@ class AccountHelper(act: MainActivity) {
     fun signInWithGoogle(){
         signInClient = getSignInClient()
         val intent = signInClient.signInIntent
-        act.startActivityForResult(intent, GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE)
+        act.googleSignInLauncher.launch(intent)
     }
 
     fun signOutGoogle(){

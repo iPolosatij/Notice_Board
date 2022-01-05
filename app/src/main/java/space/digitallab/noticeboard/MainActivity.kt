@@ -7,6 +7,8 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
@@ -26,7 +28,6 @@ import space.digitallab.noticeboard.constants.CallConstants
 import space.digitallab.noticeboard.databinding.ActivityMainBinding
 import space.digitallab.noticeboard.dialoghelper.DialogConst
 import space.digitallab.noticeboard.dialoghelper.DialogHelper
-import space.digitallab.noticeboard.dialoghelper.GoogleAccConst
 import space.digitallab.noticeboard.model.Notice
 import space.digitallab.noticeboard.viewModel.FirebaseViewModel
 
@@ -38,6 +39,7 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
      private val dialogHelper = DialogHelper(this)
      val mAuth = Firebase.auth
      val adapter = NoticeRcAdapter(this)
+     lateinit var googleSignInLauncher: ActivityResultLauncher<Intent>
      private val firebaseViewModel: FirebaseViewModel by viewModels()
 
      override fun onCreate(savedInstanceState: Bundle?) {
@@ -56,22 +58,20 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
          super.onResume()
          rootElement.mainContent.bottonNavView.selectedItemId = R.id.home
      }
-     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
 
-         if(requestCode == GoogleAccConst.GOOGLE_SIGN_IN_REQUEST_CODE){
-             //Log.d("MyLog", "Sign in result")
-             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-
-             try {
-                 val account = task.getResult(ApiException::class.java)
-                 if(account != null){
-                     dialogHelper.accHelper.signInFirebaseWithGoogle(account.idToken!!)
+     private fun onActivityResult() {
+         googleSignInLauncher =
+             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                 val task = GoogleSignIn.getSignedInAccountFromIntent(result.data)
+                 try {
+                     val account = task.getResult(ApiException::class.java)
+                     if (account != null) {
+                         dialogHelper.accHelper.signInFirebaseWithGoogle(account.idToken!!)
+                     }
+                 } catch (e: ApiException) {
+                     Log.d("MyLog", "Api error: ${e.message}")
                  }
-             }catch (e:ApiException){
-                 Log.d("MyLog", "Api error: ${e.message}")
              }
-         }
-         super.onActivityResult(requestCode, resultCode, data)
      }
 
      override fun onStart() {
@@ -80,6 +80,7 @@ import space.digitallab.noticeboard.viewModel.FirebaseViewModel
      }
 
      private fun init() {
+         onActivityResult()
          setSupportActionBar(rootElement.mainContent.toolbar)
          val toggle = ActionBarDrawerToggle(
              this,
